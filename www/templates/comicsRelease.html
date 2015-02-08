@@ -1,0 +1,8 @@
+<div class="number" ng-class="{expired: expired, near: near, wishlist: !release.date}">{{release.number}}</div>
+<div class="title"><h4 ng-class="{'full-height': !release.notes}">{{comics.name}}</h4><p ng-if="release.notes">{{release.notes}}</p></div>
+<div class="flags">
+	<div class="date">&nbsp;{{datestr}}</div>
+	<i class="icon"
+	ng-class="{ 'flaticon-ordered-b ordered': release.ordered == 'T', 'flaticon-reserved': release.ordered != 'T' && comics.reserved=='T' }"
+	>&nbsp;</i>
+</div>

@@ -1,0 +1,67 @@
+<ion-view title="{{'Comics' | translate}}">
+
+  <!-- pulsanti barra di navigazione -->
+  <ion-nav-buttons side="secondary">
+    <button class="button button-icon icon ion-document" on-tap="addComicsEntry()"></button>
+    <button class="button button-icon icon ion-android-more" on-tap="openOrderByPopover($event)"></button>
+  </ion-nav-buttons>
+
+  <!-- barra secondaria, visibile quando quella primaria è nascosta -->
+  <ion-header-bar class="bar bar-header bar-options" ng-show="currentBar=='options'">
+    <button class="button button-icon icon ion-ios7-arrow-down hide-options" on-tap="showNavBar()"></button>
+    <div class="info">{{selectedComics.length}}</div>
+    <div class="buttons pull-right">
+      <button class="button button-icon icon ion-plus-round" ng-show="canEdit" on-tap="showAddRelease()"></button>
+      <button class="button button-icon icon ion-compose" ng-show="canEdit" on-tap="editComicsEntry()"></button>
+      <button class="button button-icon icon ion-android-trash" on-tap="removeComicsEntry()"></button>
+    </div>
+  </ion-header-bar>
+
+  <!-- search bar -->
+  <!-- <header class="bar bar-header item-input-inset" ng-show="currentBar=='search'">
+    <label class="item-input-wrapper item-search">
+      <i class="icon ion-ios7-search placeholder-icon"></i>
+      <input type="search" placeholder="Filter comics..." ng-model="search">
+    </label>
+    <button ng-if="search.length"
+      class="button button-icon ion-android-close clear-button rmm-search-button"
+      on-tap="clearSearch()">
+    </button>
+  </header> -->
+  <!-- content -->
+  <ion-content class="has-header custom-header" has-bouncing="true">
+    <!-- <ion-list can-swipe="true"> -->
+    <ion-list>
+        <ion-item bindonce class="item item-comics" 
+          on-hold="selectItem(item)"
+          on-tap="clickItem(item)" 
+          ng-class="{selected: isSelected(item.id)}"
+          ng-repeat="item in comics track by item.id"> 
+
+        <div>
+          <span class="comics-title"><i class="flaticon-reserved" bo-if="item.reserved=='T'"></i> {{item.name}}</span>
+          <span class="comics-subtitle">{{item.publisher}}</span>
+          <span class="comics-notes">{{getComicsInfo(item)}}</span>
+          <span class="comics-notes" bo-if="debugMode">last upd {{item.lastUpdate}} best {{item.bestRelease.date}} id {{item.id}}</span>
+        </div>
+
+        <best-release comics="item" bo-if="item.bestRelease.number"></best-release>
+      </ion-item>
+    </ion-list>
+    <ion-infinite-scroll
+        ng-if="moreDataCanBeLoaded()"
+        icon="ion-loading-c"
+        on-infinite="loadMore()"
+        distance="1%">
+      </ion-infinite-scroll>
+  </ion-content>
+</ion-view>
+
+<script id="orderby-popover.html" type="text/ng-template">
+  <ion-popover-view class="popover-menu" style="height: 52px">
+    <ion-list>
+      <ion-item ng-if="orderBy !== 'bestRelease'" on-tap="closeOrderByPopover('bestRelease', false)"><span translate>Sort by release</span></ion-item>
+      <ion-item ng-if="orderBy !== 'name'" on-tap="closeOrderByPopover('name', false)"><span translate>Sort by name</span></ion-item>
+    </ion-list>
+  </ion-popover-view>
+</script>

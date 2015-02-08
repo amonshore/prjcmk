@@ -1,0 +1,16 @@
+{
+  "name": "prjcmk",
+  "private": "true",
+  "devDependencies": {
+    "ionic": "driftyco/ionic-bower#1.0.0-beta.14"
+  },
+  "dependencies": {
+    "underscore": "~1.7.0",
+    "moment": "~2.9.0",
+    "underscore.string": "~3.0.3",
+    "angular-bindonce": "~0.3.3",
+    "angular-translate": "2.3.0",
+    "angular-dateparser": "~1.0.12",
+    "angular-resource": "~1.3.12"
+  }
+}

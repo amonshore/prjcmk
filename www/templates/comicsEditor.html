@@ -1,0 +1,77 @@
+<ion-view title="{{entry.id == 'new' ? 'New comics entry': 'Edit comics entry' | translate}}">
+
+  <!-- pulsanti barra di navigazione -->
+  <ion-nav-buttons side="secondary">
+    <button class="button button-icon icon ion-android-checkmark" ng-click="update(entry)" ng-disabled="data.form.$invalid || !isUnique(entry)"></button>
+  </ion-nav-buttons>
+
+  <!-- content -->
+  <ion-content class="has-header custom-header">
+    <form name="data.form" novalidate class="validation-form">
+		  <label class="item item-input item-key">
+		  	<span class="input-label rmm-required" translate> Name</span>
+		    <input type="text" ng-model="entry.name" required>
+		  </label>
+		  <label class="item item-input">
+		    <span class="input-label" translate> Publisher</span>
+		    <input type="text" ng-model="entry.publisher">
+		  </label>
+		  <label class="item item-input">
+		    <span class="input-label" translate> Series</span>
+		    <input type="text" ng-model="entry.series">
+		  </label>
+		  <label class="item item-input">
+		    <span class="input-label" translate> Authors</span>
+		    <input type="text" ng-model="entry.authors">
+		  </label>
+		  <label class="item item-input">
+		    <span class="input-label" translate> Price</span>
+		    <input type="number" ng-model="entry.price" onfocus="this.select()">
+		  </label>
+		  <!-- <label class="item item-input" ng-click="chooseComicsPeriodicity()">
+		    <span class="input-label" translate> Periodicity</span>
+      	{{getPeriodicityDescr(entry.periodicity)}}
+		  </label> -->
+		  <label class="item item-input">
+		  	<span class="input-label" translate> Reserved</span>
+			  <label class="toggle toggle-dark" style="float: right">
+	   			<input type="checkbox" ng-model="entry.reserved" ng-true-value="'T'">
+	   			<div class="track">
+	     			<div class="handle"></div>
+	   			</div>
+				</label>
+				<i class="flaticon-reserved icon-editor-right" ng-show="entry.reserved=='T'"></i>
+			</label>
+		  <label class="item item-input item-stacked-label">
+		    <span class="input-label" translate> Notes</span>
+		    <input type="text" ng-model="entry.notes">
+		  </label>
+		  <ion-item on-tap="chooseComicsPeriodicity()">
+		  	<span translate>Comics released every</span>
+		  	<p ng-show="!entry.periodicity" translate>Not specified</p>
+		  	<p ng-show="entry.periodicity == 'w1'" translate>Week</p>
+		  	<p ng-show="entry.periodicity == 'M1'" translate>Month</p>
+				<p ng-show="entry.periodicity == 'M2'" translate>2 months</p>
+				<p ng-show="entry.periodicity == 'M3'" translate>3 months</p>
+				<p ng-show="entry.periodicity == 'M4'" translate>4 months</p>
+				<p ng-show="entry.periodicity == 'M6'" translate>6 months</p>
+				<p ng-show="entry.periodicity == 'Y1'" translate>Year</p>
+			</ion-item>
+    </form>
+  </ion-content>
+</ion-view>
+
+<script id="comicsPeriodicity.html" type="text/ng-template">
+	<ion-scroll style="height: 300px">
+	<ion-list>
+		<ion-radio ng-model="entry.periodicity" ng-value="''" ng-change="comicsPeriodicityPopup.close('')" icon="flaticon-radio-checked"><span translate>Not specified</span></ion-radio>
+		<ion-radio ng-model="entry.periodicity" ng-value="'w1'" ng-change="comicsPeriodicityPopup.close('w1')" icon="flaticon-radio-checked"><span translate>Week</span></ion-radio>
+		<ion-radio ng-model="entry.periodicity" ng-value="'M1'" ng-change="comicsPeriodicityPopup.close('M1')" icon="flaticon-radio-checked"><span translate>Month</span></ion-radio>
+		<ion-radio ng-model="entry.periodicity" ng-value="'M2'" ng-change="comicsPeriodicityPopup.close('M2')" icon="flaticon-radio-checked"><span translate>2 months</span></ion-radio>
+		<ion-radio ng-model="entry.periodicity" ng-value="'M3'" ng-change="comicsPeriodicityPopup.close('M3')" icon="flaticon-radio-checked"><span translate>3 months</span></ion-radio>
+		<ion-radio ng-model="entry.periodicity" ng-value="'M4'" ng-change="comicsPeriodicityPopup.close('M4')" icon="flaticon-radio-checked"><span translate>4 months</span></ion-radio>
+		<ion-radio ng-model="entry.periodicity" ng-value="'M6'" ng-change="comicsPeriodicityPopup.close('M6')" icon="flaticon-radio-checked"><span translate>6 months</span></ion-radio>
+		<ion-radio ng-model="entry.periodicity" ng-value="'Y1'" ng-change="comicsPeriodicityPopup.close('Y1')" icon="flaticon-radio-checked"><span translate>Year</span></ion-radio>
+	</ion-list>
+	</ion-scroll>
+</script>

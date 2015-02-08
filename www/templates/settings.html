@@ -1,0 +1,47 @@
+<ion-view title="{{'General settings' | translate}}">
+  <ion-content>
+		<ion-list>
+			<!-- <ion-item class="item-big" on-tap="chooseAutoFill()">
+				<span translate>Auto fill release data</span>
+				<p class="option-value" ng-show="userOptions.autoFillReleaseData == 'T'" translate>Enabled</p>
+				<p class="option-value" ng-show="userOptions.autoFillReleaseData != 'T'" translate>Disabled</p>
+			</ion-item> -->
+			<ion-item class="item-big" on-tap="chooseWeekStart()">
+				<span translate>Week start on</span>
+				<p class="option-value" ng-show="userOptions.weekStartMonday == 'T'" translate>Monday</p>
+				<p class="option-value" ng-show="userOptions.weekStartMonday != 'T'" translate>Sunday</p>
+			</ion-item>
+			<ion-item class="item-big" on-tap="chooseDefaultUrl()">
+				<span translate>On start show</span>
+				<p class="option-value" ng-show="userOptions.defaultUrl == '/app/comics'" translate>Comics</p>
+				<p class="option-value" ng-show="userOptions.defaultUrl == '/app/releases'" translate>Releases</p>
+				<p class="option-value" ng-show="userOptions.defaultUrl == '/app/wishlist'" translate>Losts &amp; Wishlist</p>
+				<p class="option-value" ng-show="userOptions.defaultUrl == '/app/purchased'" translate>Purchased</p>
+			</ion-item>
+			<!-- <ion-item class="item-big" on-tap="resetOptions()"><i class="icon ion-refresh"></i> <span translate>Reset settings</span></ion-item> -->
+		</ion-list>
+  </ion-content>
+</ion-view>
+
+<script id="autoFillReleaseData.html" type="text/ng-template">
+	<ion-list>
+		<ion-radio ng-model="userOptions.autoFillReleaseData" ng-value="'F'" ng-change="autoFillPopup.close('F')" icon="flaticon-radio-checked"><span translate>Disabled</span></ion-radio>
+		<ion-radio ng-model="userOptions.autoFillReleaseData" ng-value="'T'" ng-change="autoFillPopup.close('T')" icon="flaticon-radio-checked"><span translate>Enabled</span></ion-radio>
+	</ion-list>
+</script>
+
+<script id="weekStartMonday.html" type="text/ng-template">
+	<ion-list>
+		<ion-radio ng-model="userOptions.weekStartMonday" ng-value="'F'" ng-change="weekStartPopup.close('F')" icon="flaticon-radio-checked"><span translate>Sunday</span></ion-radio>
+		<ion-radio ng-model="userOptions.weekStartMonday" ng-value="'T'" ng-change="weekStartPopup.close('T')" icon="flaticon-radio-checked"><span translate>Monday</span></ion-radio>
+	</ion-list>
+</script>
+
+<script id="defaultUrl.html" type="text/ng-template">
+	<ion-list>
+		<ion-radio ng-model="userOptions.defaultUrl" ng-value="'/app/comics'" ng-change="defaultUrlPopup.close('/app/comics')" icon="flaticon-radio-checked"><span translate>Comics</span></ion-radio>
+		<ion-radio ng-model="userOptions.defaultUrl" ng-value="'/app/releases'" ng-change="defaultUrlPopup.close('/app/releases')" icon="flaticon-radio-checked"><span translate>Releases</span></ion-radio>
+		<ion-radio ng-model="userOptions.defaultUrl" ng-value="'/app/wishlist'" ng-change="defaultUrlPopup.close('/app/wishlist')" icon="flaticon-radio-checked"><span translate>Losts &amp; Wishlist</span></ion-radio>
+		<ion-radio ng-model="userOptions.defaultUrl" ng-value="'/app/purchased'" ng-change="defaultUrlPopup.close('/app/purchased')" icon="flaticon-radio-checked"><span translate>Purchased</span></ion-radio>
+	</ion-list>
+</script>

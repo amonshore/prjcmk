@@ -1,0 +1,9 @@
+<ion-view title="{{'Data' | translate}}">
+  <ion-content>
+		<ion-list>
+			<ion-item class="item-big" on-tap="backup()"><i class="icon flaticon-download"></i> <span translate="Backup data.1">Backup data</span></ion-item>
+			<ion-item class="item-big" on-tap="restore()"><i class="icon flaticon-upload"></i> <span translate>Restore data</span><p><span translate>Last backup:</span> {{lastBackup}}</p></ion-item>
+			<ion-item class="item-big" on-tap="deleteAllData()"><i class="icon ion-trash-b"></i> <span translate>Delete all data</span></ion-item>
+		</ion-list>
+  </ion-content>
+</ion-view>

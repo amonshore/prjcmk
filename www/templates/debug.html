@@ -1,0 +1,23 @@
+<ion-view title="Debug">
+  <ion-content>
+  	<form name="myForm">
+	  	<ion-list>
+			  <ion-item class="item item-toggle">
+					Active debug mode
+					<label class="toggle">
+						<input type="checkbox" ng-model="userOptions.debugMode" ng-true-value="'T'" ng-false-value="'F'" ng-change="optionsChanged()">
+						<div class="track">
+						<div class="handle"></div>
+						</div>
+					</label>
+				</ion-item>
+	  		<ion-item on-tap="fakeEntries()" ng-if="userOptions.debugMode=='T'"><i class="icon ion-arrow-graph-down-right"></i> Create fake entries</ion-item>
+	  		<ion-item on-tap="switchUser()" ng-if="userOptions.debugMode=='T'"><i class="icon ion-arrow-graph-down-right"></i> Switch user <p>Current: {{currentUser}}</p></ion-item>
+	  		<ion-item on-tap="clearCache()" ng-if="userOptions.debugMode=='T'"><i class="icon ion-trash-a"></i> Clear cache</ion-item>
+	  		<ion-item on-tap="repairData()" ng-if="userOptions.debugMode=='T'"><i class="icon ion-hammer"></i> Repair data</ion-item>
+	  		<ion-item on-tap="test($event)" ng-if="userOptions.debugMode=='T'"><i class="icon ion-arrow-graph-down-right"></i> Test {{testresult}}</ion-item>
+	  		<label class="item item-input" ng-if="userOptions.debugMode=='T'"><span class="input-label">Infinite scroll chunk</span><input type="number" ng-model="userOptions.infiniteScrollChunk" ng-change="optionsChanged()"></label>
+	  	</ion-list>
+  	</form>
+  </ion-content>
+</ion-view>

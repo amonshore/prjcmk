@@ -1,0 +1,24 @@
+{
+  "name": "angular-dateParser",
+  "version": "1.0.12",
+  "homepage": "https://github.com/dnasir/angular-dateParser",
+  "authors": [
+    "Dzulqarnain Nasir"
+  ],
+  "description": "A simple parser that converts datetime strings into Date objects",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "1.x",
+    "angular-i18n": "1.x"
+  },
+  "devDependencies": {
+    "angular-mocks": "1.x"
+  }
+}

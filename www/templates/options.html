@@ -1,0 +1,10 @@
+<ion-view title="{{'Settings' | translate}}">
+  <ion-content class="has-header">
+		<ion-list>
+			<ion-item class="item-big" ng-href="#/app/settings"><i class="icon ion-android-settings"></i> <span translate>General settings</span></ion-item>
+			<ion-item class="item-big" ng-href="#/app/backup"><i class="icon ion-android-archive"></i> <span translate>Data</span></ion-item>
+			<ion-item class="item-big" ng-href="#/app/about"><i class="icon ion-android-information"></i> <span translate>About Comikku</span></ion-item>
+			<ion-item class="item-big" ng-href="#/app/debug" ng-if="userOptions.debugMode == 'T'"><i class="icon ion-nuclear"></i> Debug</ion-item>
+		</ion-list>
+  </ion-content>
+</ion-view>

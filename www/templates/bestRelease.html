@@ -1,0 +1,5 @@
+<div bindonce class="best-release" ng-class="{expired: expired, near: near, wishlist: !best.date}">
+	<div class="number">{{best.number}}</div>
+	<div class="date" bo-if="best.date">{{datestr}}</div>
+	<div class="date" bo-if="!best.date">wish</i></div>
+</div>

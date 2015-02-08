@@ -1,0 +1,42 @@
+<ion-side-menus enable-menu-with-back-views="false">
+  <ion-side-menu-content>
+    <ion-nav-bar class="bar-stable bar-energized bar-comikku">
+      <ion-nav-back-button>
+      </ion-nav-back-button>
+
+      <ion-nav-buttons side="left">
+        <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
+        </button>
+      </ion-nav-buttons>
+    </ion-nav-bar>
+    <ion-nav-view name="menuContent"></ion-nav-view>
+  </ion-side-menu-content>
+
+  <ion-side-menu side="left" class="menu-logo">
+    <header class="bar bar-header bar-stable">
+      <h1 class="title"><!-- <img class="logo" src="img/logo32.png" width="32"> -->Comikku</h1>
+    </header>
+    <ion-content class="has-header">
+      <ion-list>
+        <ion-item item-type="item-icon-left" class="item-menu-big" nav-clear menu-close ng-href="#/app/comics">
+          <i class="icon flaticon-comics" style="font-size: 1.4em"></i> <span translate>Comics</span><!-- <span class="badge badge-assertive">0</span> -->
+        </ion-item>
+        <ion-item item-type="item-icon-left" class="item-menu-big" nav-clear menu-close ng-href="#/app/releases">
+          <i class="icon flaticon-releases"></i> <span translate>Releases</span>
+        </ion-item>
+        <ion-item item-type="item-icon-left" class="item-menu-big" nav-clear menu-close ng-href="#/app/wishlist">
+          <i class="icon flaticon-wishlist"></i> <span translate>Losts &amp; Wishlist</span>
+        </ion-item>
+        <ion-item item-type="item-icon-left" class="item-menu-big" nav-clear menu-close ng-href="#/app/purchased">
+          <i class="icon flaticon-purchased"></i> <span translate>Purchased</span>
+        </ion-item>
+        <ion-item item-type="item-icon-left" class="item-menu-big" nav-clear menu-close ng-href="#/app/options">
+          <i class="icon ion-ios7-settings-strong"></i> <span translate>Settings</span>
+        </ion-item>
+      </ion-list>
+    </ion-content>
+    <div class="bar bar-footer bar-balanced" ng-if="debugMode">
+      <div class="title">uid: {{uid}}</div>
+    </div>
+  </ion-side-menu>
+</ion-side-menus>
