@@ -50,7 +50,7 @@ function($scope, $ionicModal, $timeout, $state, $undoPopup, $utils, $toast, $ion
   	//console.log(new Date().getTime() + " applyFilter")
     var _items = [];
 
-    //chiavi gruppo -> aaa=to buy, lll=losts, zzz=wishlist, zzzz=purchased
+    //chiavi gruppo -> aaa=to buy, lll=lost, zzz=wishlist, zzzz=purchased
 
     //estraggo tutt le releases
     rels = $comicsData.getReleases($stateParams.comicsId == null ? null : 
@@ -95,7 +95,7 @@ function($scope, $ionicModal, $timeout, $state, $undoPopup, $utils, $toast, $ion
 				} else if (!rel.date) {
 					return 'zzz'; //wishlist
 				} else if (rel.date < today) {
-					return 'lll'; //losts
+					return 'lll'; //lost
 				} else {
 					return 'aaa'; //to purchase
 				}
@@ -128,7 +128,7 @@ function($scope, $ionicModal, $timeout, $state, $undoPopup, $utils, $toast, $ion
 				_items.push({ _kk: kk++, label: $filter('translate')('Wishlist'), count: grp.length });
     	} else if (grpKeys[ii] == 'lll') {
     		if ($scope.entry == null && !$scope.isWishlist) continue;
-				_items.push({ _kk: kk++, label: $filter('translate')('Losts'), count: grp.length });
+				_items.push({ _kk: kk++, label: $filter('translate')('Lost'), count: grp.length });
 			} else if (grpKeys[ii] == 'aaa') {
 				_items.push({ _kk: kk++, label: $filter('translate')('To buy'), count: grp.length });
 			} else if (grpKeys[ii] == 'zzzz') {
@@ -178,7 +178,7 @@ function($scope, $ionicModal, $timeout, $state, $undoPopup, $utils, $toast, $ion
 	//
 	$scope.selectedReleases = [];
 	//
-	$scope.title = ($scope.isPurchased ? 'Purchased' : ($scope.isWishlist ? 'Losts & Wishlist' : ($scope.entry ? $scope.entry.name : 'Releases')));
+	$scope.title = ($scope.isPurchased ? 'Purchased' : ($scope.isWishlist ? 'Lost & Wishlist' : ($scope.entry ? $scope.entry.name : 'Releases')));
 	//
 	$scope.groupBy = $settings.userOptions.releaseGroupBy || 'week';
 	$scope.thisTime = null;
