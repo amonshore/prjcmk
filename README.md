@@ -12,3 +12,5 @@ plugins:
 - org.apache.cordova.globalization
 - org.apache.cordova.splashscreen
 - uk.co.whiteoctober.cordova.appversion
+- am.armsoft.plugins.ListPicker
+- org.apache.cordova.dialogs

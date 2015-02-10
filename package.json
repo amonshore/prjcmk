@@ -19,6 +19,8 @@
     "org.apache.cordova.file",
     "org.apache.cordova.globalization",
     "org.apache.cordova.splashscreen",
-    "uk.co.whiteoctober.cordova.appversion"
+    "uk.co.whiteoctober.cordova.appversion",
+    "am.armsoft.plugins.listpicker",
+    "org.apache.cordova.dialogs"
   ]
 }
