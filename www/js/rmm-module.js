@@ -655,3 +655,32 @@ IonicModule
     };
   }
 ]);
+
+IonicModule
+.factory('$dialogs', ['$q', 
+function($q) {
+  return {
+    showPicker: function(config) {
+      //sono costretto ad usare $q altrimenti non viene aggiornata la vista 
+      var q = $q.defer();
+
+      window.plugins.listpicker.showPicker(config, 
+          function(item) {
+            q.resolve(item);
+          }, function() {
+            q.reject();
+          }
+      );
+
+      return q.promise;
+    },
+    confirm: function(config) {
+      var opts = angular.extend({ message: "", title: "Confirm?", buttons: [ "Ok", "Cancel" ] }, config || {}); 
+      var q = $q.defer();
+      navigator.notification.confirm(opts.message, function(res) {
+        q.resolve(res); //buttonIndex
+      }, opts.title, opts.buttons);
+      return q.promise;
+    }
+  };
+}]);

@@ -3,9 +3,11 @@ angular.module('starter.controllers')
 	'$scope', '$q', '$ionicPopup', '$undoPopup', '$toast', '$ionicPopover', '$ionicModal', 
   '$file', '$timeout', '$filter', 
   '$comicsData', '$settings', '$ionicNavBarDelegate', '$translate', '$ionicHistory',
+  '$dialogs',
 function($scope, $q, $ionicPopup, $undoPopup, $toast, $ionicPopover, $ionicModal, 
   $file, $timeout, $filter, 
-  $comicsData, $settings, $ionicNavBarDelegate, $translate, $ionicHistory) {
+  $comicsData, $settings, $ionicNavBarDelegate, $translate, $ionicHistory,
+  $dialogs) {
   //
   //TODO caricare i dati in beforeExit
   //
@@ -14,7 +16,7 @@ function($scope, $q, $ionicPopup, $undoPopup, $toast, $ionicPopover, $ionicModal
   $scope.currentUser = $comicsData.uid;
   $scope.langinfo = 'moment: ' + moment.locale() + ' - translate: ' + $translate.use();
   //
-  if (window.cordova) {
+  if (window.cordova && window.cordova.getAppVersion) {
     window.cordova.getAppVersion(function (version) {
       $scope.version = version;
     });
@@ -31,57 +33,113 @@ function($scope, $q, $ionicPopup, $undoPopup, $toast, $ionicPopover, $ionicModal
   };
   //
   $scope.chooseAutoFill = function() {
-    $scope.autoFillPopup = $ionicPopup.show({
-      templateUrl: 'autoFillReleaseData.html',
-      title: $filter('translate')('Auto fill release data'),
-      scope: $scope,
-      buttons: [{
-        text: $filter('translate')('Cancel'),
-        type: 'button-default',
-        onTap: function(e) { return false; }
-      }]
-    });
-    $scope.autoFillPopup.then(function(res) {
-      if (res) {
+    if (!window.cordova) {
+      $scope.autoFillPopup = $ionicPopup.show({
+        templateUrl: 'autoFillReleaseData.html',
+        title: $filter('translate')('Auto fill release data'),
+        scope: $scope,
+        buttons: [{
+          text: $filter('translate')('Cancel'),
+          type: 'button-default',
+          onTap: function(e) { return false; }
+        }]
+      });
+      $scope.autoFillPopup.then(function(res) {
+        if (res) {
+          $scope.optionsChanged();
+        }
+      });
+    } else {
+      var config = {
+        title: $filter('translate')('Auto fill release data'),
+        items: [
+          { value: "F", text: $filter('translate')('Disabled') },
+          { value: "T", text: $filter('translate')('Enabled') }
+        ],
+        selectedValue: $scope.userOptions.autoFillReleaseData,
+          doneButtonLabel: $filter('translate')('Done'),
+          cancelButtonLabel: $filter('translate')('Cancel')
+      };
+
+      $dialogs.showPicker(config).then(function(res) {
+        $scope.userOptions.autoFillReleaseData = res;
         $scope.optionsChanged();
-      }
-    });
+      });      
+    }
   };
   //
   $scope.chooseWeekStart = function() {
-    $scope.weekStartPopup = $ionicPopup.show({
-      templateUrl: 'weekStartMonday.html',
-      title: $filter('translate')('Week start on'),
-      scope: $scope,
-      buttons: [{
-        text: $filter('translate')('Cancel'),
-        type: 'button-default',
-        onTap: function(e) { return false; }
-      }]
-    });
-    $scope.weekStartPopup.then(function(res) {
-      if (res) {
+    if (!window.cordova) {
+      $scope.weekStartPopup = $ionicPopup.show({
+        templateUrl: 'weekStartMonday.html',
+        title: $filter('translate')('Week start on'),
+        scope: $scope,
+        buttons: [{
+          text: $filter('translate')('Cancel'),
+          type: 'button-default',
+          onTap: function(e) { return false; }
+        }]
+      });
+      $scope.weekStartPopup.then(function(res) {
+        if (res) {
+          $scope.optionsChanged();
+        }
+      });
+    } else {
+      var config = {
+        title: $filter('translate')('Week start on'),
+        items: [
+          { value: "F", text: $filter('translate')('Sunday') },
+          { value: "T", text: $filter('translate')('Monday.1') }
+        ],
+        selectedValue: $scope.userOptions.weekStartMonday,
+          doneButtonLabel: $filter('translate')('Done'),
+          cancelButtonLabel: $filter('translate')('Cancel')
+      };
+
+      $dialogs.showPicker(config).then(function(res) {
+        $scope.userOptions.weekStartMonday = res;
         $scope.optionsChanged();
-      }
-    });
+      });      
+    }
   };
   //
   $scope.chooseDefaultUrl = function() {
-    $scope.defaultUrlPopup = $ionicPopup.show({
-      templateUrl: 'defaultUrl.html',
-      title: $filter('translate')('On start show'),
-      scope: $scope,
-      buttons: [{
-        text: $filter('translate')('Cancel'),
-        type: 'button-default',
-        onTap: function(e) { return false; }
-      }]
-    });
-    $scope.defaultUrlPopup.then(function(res) {
-      if (res) {
+    if (!window.cordova) {
+      $scope.defaultUrlPopup = $ionicPopup.show({
+        templateUrl: 'defaultUrl.html',
+        title: $filter('translate')('On start show'),
+        scope: $scope,
+        buttons: [{
+          text: $filter('translate')('Cancel'),
+          type: 'button-default',
+          onTap: function(e) { return false; }
+        }]
+      });
+      $scope.defaultUrlPopup.then(function(res) {
+        if (res) {
+          $scope.optionsChanged();
+        }
+      });
+    } else {
+      var config = {
+        title: $filter('translate')('On start show'),
+        items: [
+          { value: "/app/comics", text: $filter('translate')('Comics') },
+          { value: "/app/releases", text: $filter('translate')('Releases') },
+          { value: "/app/wishlist", text: $filter('translate')('Lost & Wishlist.1') },
+          { value: "/app/purchased", text: $filter('translate')('Purchased') }
+        ],
+        selectedValue: $scope.userOptions.defaultUrl,
+          doneButtonLabel: $filter('translate')('Done'),
+          cancelButtonLabel: $filter('translate')('Cancel')
+      };
+
+      $dialogs.showPicker(config).then(function(res) {
+        $scope.userOptions.defaultUrl = res;
         $scope.optionsChanged();
-      }
-    });
+      });      
+    }
   };
   //
   $scope.resetOptions = function() {
@@ -101,18 +159,30 @@ function($scope, $q, $ionicPopup, $undoPopup, $toast, $ionicPopover, $ionicModal
   };
   //
   $scope.deleteAllData = function() {
-    $ionicPopup.confirm({
-      title: $filter('translate')('Delete all data?'),
-      template: $filter('translate')('You\'ll lose all comics and releases!'),
-      cancelText: $filter('translate')('Cancel'),
-      okText: $filter('translate')('Delete')
-    }).then(function(res) {
-      if (res) {
-        $comicsData.clear();
-        $comicsData.save();
-        $toast.show($filter('translate')('Data deleted'));
-      }
-    });
+    if (!window.cordova) {
+      $ionicPopup.confirm({
+        title: $filter('translate')('Delete all data?'),
+        template: $filter('translate')('You\'ll lose all comics and releases!'),
+        cancelText: $filter('translate')('Cancel'),
+        okText: $filter('translate')('Delete')
+      }).then(function(res) {
+        if (res) {
+          $comicsData.clear();
+          $comicsData.save();
+          $toast.show($filter('translate')('Data deleted'));
+        }
+      });
+    } else {
+      $dialogs.confirm({ title: $filter('translate')('Delete all data?'), 
+        message: $filter('translate')('You\'ll lose all comics and releases!'),
+        buttons: [ $filter('translate')('Cancel'), $filter('translate')('Delete') ] }).then(function(res) {
+          if (res === 2) { //delete
+            $comicsData.clear();
+            $comicsData.save();
+            $toast.show($filter('translate')('Data deleted'));
+          } 
+        });
+    }
   };
   //
   $scope.repairData = function() {
@@ -141,38 +211,67 @@ function($scope, $q, $ionicPopup, $undoPopup, $toast, $ionicPopover, $ionicModal
   };
   //
   $scope.backup = function() {
-    $ionicPopup.confirm({
-      title: $filter('translate')('Backup data?'),
-      template: $filter('translate')('Previous backup will be overridden.'),
-      cancelText: $filter('translate')('Cancel'),
-      okText: $filter('translate')('Backup')
-    }).then(function(res) {
-      if (res) {
-        $comicsData.backupDataToFile().then(function(res) {
-          $scope.readLastBackup();
-          $toast.show($filter('translate')('Backup complete'));
-        }, function(error) {
-          $toast.show("Write error " + error.code);
+    if (!window.cordova) {
+      $ionicPopup.confirm({
+        title: $filter('translate')('Backup data?'),
+        template: $filter('translate')('Previous backup will be overridden.'),
+        cancelText: $filter('translate')('Cancel'),
+        okText: $filter('translate')('Backup')
+      }).then(function(res) {
+        if (res) {
+          $comicsData.backupDataToFile().then(function(res) {
+            $scope.readLastBackup();
+            $toast.show($filter('translate')('Backup complete'));
+          }, function(error) {
+            $toast.show("Write error " + error.code);
+          });
+        }
+      });
+    } else {
+      $dialogs.confirm({ title: $filter('translate')('Backup data?'), 
+        message: $filter('translate')('Previous backup will be overridden.'),
+        buttons: [ $filter('translate')('Cancel'), $filter('translate')('Backup') ] }).then(function(res) {
+          if (res === 2) { //backup
+            $comicsData.backupDataToFile().then(function(res) {
+              $scope.readLastBackup();
+              $toast.show($filter('translate')('Backup complete'));
+            }, function(error) {
+              $toast.show("Write error " + error.code);
+            });
+          } 
         });
-      }
-    });
+    }
   };
   //
   $scope.restore = function() {
-    $ionicPopup.confirm({
-      title: $filter('translate')('Restore data from backup?'),
-      template: $filter('translate')('Current data will be overridden.'),
-      cancelText: $filter('translate')('Cancel'),
-      okText: $filter('translate')('Restore')
-    }).then(function(res) {
-      if (res) {
-        $comicsData.restoreDataFromFile().then(function(res) {
-          $toast.show($filter('translate')('Restore complete'));
-        }, function(error) {
-          $toast.show("Read error " + error.code);
+    if (!window.cordova) {
+      $ionicPopup.confirm({
+        title: $filter('translate')('Restore data from backup?'),
+        template: $filter('translate')('Current data will be overridden.'),
+        cancelText: $filter('translate')('Cancel'),
+        okText: $filter('translate')('Restore')
+      }).then(function(res) {
+        if (res) {
+          $comicsData.restoreDataFromFile().then(function(res) {
+            $toast.show($filter('translate')('Restore complete'));
+          }, function(error) {
+            $toast.show("Read error " + error.code);
+          });
+        }
+      });
+    } else {
+      $dialogs.confirm({ title: $filter('translate')('Restore data from backup?'), 
+        message: $filter('translate')('Current data will be overridden.'),
+        buttons: [ $filter('translate')('Cancel'), $filter('translate')('Restore') ] }).then(function(res) {
+          if (res === 2) { //restore
+            $comicsData.restoreDataFromFile().then(function(res) {
+              $toast.show($filter('translate')('Restore complete'));
+            }, function(error) {
+              $toast.show("Read error " + error.code);
+            });
+          } 
         });
-      }
-    });
+    }      
   };
   //
   $scope.readLastBackup();
