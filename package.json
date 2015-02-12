@@ -16,9 +16,11 @@
   },
   "cordovaPlugins": [
     "de.appplant.cordova.plugin.local-notification",
-    "org.apache.cordova.file",
     "org.apache.cordova.globalization",
     "org.apache.cordova.splashscreen",
-    "uk.co.whiteoctober.cordova.appversion"
+    "am.armsoft.plugins.listpicker",
+    "org.apache.cordova.dialogs",
+    "uk.co.whiteoctober.cordova.appversion",
+    "org.apache.cordova.file"
   ]
 }

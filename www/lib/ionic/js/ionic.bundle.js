@@ -1766,6 +1766,17 @@ window.ionic.version = '1.0.0-beta.14';
     },
     triggered: false,
     handler: function dragGesture(ev, inst) {
+ 
+      //** https://github.com/driftyco/ionic/commit/a5881eaeba7d12d016fe3712c77261e75e863cf3
+      if (ev.srcEvent.type == 'touchstart' || ev.srcEvent.type == 'touchend') {
+       this.preventedFirstMove = false;
+
+      } else if (!this.preventedFirstMove && ev.srcEvent.type == 'touchmove') {
+        ev.srcEvent.preventDefault();
+       this.preventedFirstMove = true;
+      }
+      //**
+
       // current gesture isnt drag, but dragged is true
       // this means an other gesture is busy. now call dragend
       if(ionic.Gestures.detection.current.name != this.name && this.triggered) {

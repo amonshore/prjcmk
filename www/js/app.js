@@ -35,13 +35,15 @@ function($stateProvider, $urlRouterProvider, $initOptionsProvider, $translatePro
 
   //TODO caricare le stringhe da file esterni
   $translateProvider.translations('en', {
-    // 'Comics': 'Comics'
+    "Monday.1": "Monday",
+    "Lost & Wishlist.1": "Lost & Wishlist"
   })
   .translations('it', {
     "Comics": "Fumetti",
     "Comics removed": "Fumetti rimossi",
     "Releases": "Uscite",
     "Lost & Wishlist": "Persi &amp; desiderati",
+    "Lost & Wishlist.1": "Persi & desiderati",
     "Purchased": "Acquistati",
     "To buy": "Da acquistare",
     "Settings": "Impostazioni",
@@ -96,6 +98,7 @@ function($stateProvider, $urlRouterProvider, $initOptionsProvider, $translatePro
     "Auto fill release data": "Impostazione automatica nuova uscita",
     "Week start on": "La settimana inizia di",
     "Monday": "Luned&igrave;",
+    "Monday.1": "Lunedì",
     "Sunday": "Domenica",
     "On start show": "All'avvio mostra",
     "Data": "Dati",
@@ -132,7 +135,8 @@ function($stateProvider, $urlRouterProvider, $initOptionsProvider, $translatePro
     "Order canceled": "Ordine annullato",
     "Send comment": "Invia commenti",
     "Comment about Comikku": "Commenti su Comikku",
-    "Version": "Versione"
+    "Version": "Versione",
+    "Done": "Fatto"
   });
 
   //imposto la lingua di default

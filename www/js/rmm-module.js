@@ -629,29 +629,58 @@ IonicModule
     };
 } );
 
-//https://github.com/driftyco/ionic/issues/2674
-//thx to cbruun
-//risolve il problema del menu laterale che non si chiude con lo swype
+// //https://github.com/driftyco/ionic/issues/2674
+// //thx to cbruun
+// //risolve il problema del menu laterale che non si chiude con lo swype
+// IonicModule
+// .directive('fixAndroidTouch', [
+//   '$rootScope', '$ionicPlatform',
+//   function(rootScope, ionicPlatform) {
+//     return {
+//       link: function() {
+//         ionicPlatform.ready().then(function() {
+//           if (ionic.Platform.isAndroid()) {
+//             var documentOnTouchMoveFix = function (event) {
+//               event.preventDefault();
+//             };
+
+//             document.ontouchmove = documentOnTouchMoveFix;
+
+//             rootScope.$on('$ionicView.afterEnter', function () {
+//               document.ontouchmove = documentOnTouchMoveFix;
+//             });
+//           }
+//         });
+//       }
+//     };
+//   }
+// ]);
+
 IonicModule
-.directive('fixAndroidTouch', [
-  '$rootScope', '$ionicPlatform',
-  function(rootScope, ionicPlatform) {
-    return {
-      link: function() {
-        ionicPlatform.ready().then(function() {
-          if (ionic.Platform.isAndroid()) {
-            var documentOnTouchMoveFix = function (event) {
-              event.preventDefault();
-            };
+.factory('$dialogs', ['$q', 
+function($q) {
+  return {
+    showPicker: function(config) {
+      //sono costretto ad usare $q altrimenti non viene aggiornata la vista 
+      var q = $q.defer();
 
-            document.ontouchmove = documentOnTouchMoveFix;
-
-            rootScope.$on('$ionicView.afterEnter', function () {
-              document.ontouchmove = documentOnTouchMoveFix;
-            });
+      window.plugins.listpicker.showPicker(config, 
+          function(item) {
+            q.resolve(item);
+          }, function() {
+            q.reject();
           }
-        });
-      }
-    };
-  }
-]);
+      );
+
+      return q.promise;
+    },
+    confirm: function(config) {
+      var opts = angular.extend({ message: "", title: "Confirm?", buttons: [ "Ok", "Cancel" ] }, config || {}); 
+      var q = $q.defer();
+      navigator.notification.confirm(opts.message, function(res) {
+        q.resolve(res); //buttonIndex
+      }, opts.title, opts.buttons);
+      return q.promise;
+    }
+  };
+}]);

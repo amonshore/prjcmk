@@ -296,8 +296,8 @@ function($scope, $ionicModal, $timeout, $state, $filter, $undoPopup, $utils, $de
   };
 })
 .controller('ComicsEditorCtrl', [
-'$scope', '$stateParams', '$ionicHistory', '$comicsData', '$ionicPopup', '$filter',
-function($scope, $stateParams, $ionicHistory, $comicsData, $ionicPopup, $filter) {
+'$scope', '$stateParams', '$ionicHistory', '$comicsData', '$ionicPopup', '$filter', '$dialogs',
+function($scope, $stateParams, $ionicHistory, $comicsData, $ionicPopup, $filter, $dialogs) {
 	//usato per contenere la form in modo da poter accedere alla form anche all'esterno del tag <form>
 	$scope.data = {};
   //console.log($stateParams, $comicsData)
@@ -322,16 +322,39 @@ function($scope, $stateParams, $ionicHistory, $comicsData, $ionicPopup, $filter)
   };
 	//
   $scope.chooseComicsPeriodicity = function() {
-    $scope.comicsPeriodicityPopup = $ionicPopup.show({
-      templateUrl: 'comicsPeriodicity.html',
-      title: $filter('translate')('Comics released every'),
-      scope: $scope,
-      buttons: [{
-        text: $filter('translate')('Cancel'),
-        type: 'button-default',
-        onTap: function(e) { return false; }
-      }]
-    });
+  	if (!window.cordova) {
+	    $scope.comicsPeriodicityPopup = $ionicPopup.show({
+	      templateUrl: 'comicsPeriodicity.html',
+	      title: $filter('translate')('Comics released every'),
+	      scope: $scope,
+	      buttons: [{
+	        text: $filter('translate')('Cancel'),
+	        type: 'button-default',
+	        onTap: function(e) { return false; }
+	      }]
+	    });
+		} else {
+			var config = {
+			    title: $filter('translate')('Comics released every'), 
+			    items: [
+			        { value: "", text: $filter('translate')('Not specified') },
+			        { value: "w1", text: $filter('translate')('Week') },
+			        { value: "M1", text: $filter('translate')('Month') },
+			        { value: "M2", text: $filter('translate')('2 month') },
+			        { value: "M3", text: $filter('translate')('3 month') },
+			        { value: "M4", text: $filter('translate')('4 month') },
+			        { value: "M6", text: $filter('translate')('6 month') },
+			        { value: "Y1", text: $filter('translate')('Year') }
+			    ],
+			    selectedValue: $scope.entry.periodicity,
+			    doneButtonLabel: $filter('translate')('Done'),
+			    cancelButtonLabel: $filter('translate')('Cancel')
+			};
+
+			$dialogs.showPicker(config).then(function(res) {
+				$scope.entry.periodicity = res;
+			});
+		}
   };
   $scope.reset();
 }]);
