@@ -333,6 +333,8 @@ angular.module('starter.controllers', ['starter.services'])
 .controller('AppCtrl', [ '$scope', '$settings', '$comicsData',
 function($scope, $settings, $comicsData) {
   //
+  console.log("***** Comikku STARTING");
+  //
   $settings.load();
   //console.log("   ---- LOAD " + JSON.stringify($settings.userOptions))
   moment.weekStartOnMonday($settings.userOptions.weekStartMonday == 'T');

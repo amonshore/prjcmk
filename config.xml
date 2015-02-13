@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <widget id="it.amonshore.comikku" version="0.0.7" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
   <name>Comikku</name>
-  <description>Comics reminder and whishlist</description>
-  <author email="amonshore@gmail.com" href="it.linkedin.com/in/caldigianfranco/">Caldi Gianfranco</author>
+  <description>
+        Comics reminder and whishlist
+    </description>
+  <author email="amonshore@gmail.com" href="it.linkedin.com/in/caldigianfranco/">
+      Caldi Gianfranco
+    </author>
   <content src="index.html"/>
   <access origin="*"/>
   <access origin="mailto:*" launch-external="yes"/>
