@@ -1,6 +1,6 @@
 //
 angular.module('starter', 
-  ['ionic', 'pasvaz.bindonce', 'starter.controllers', 'ngAnimate', 'rmm', 'dateParser', 'pascalprecht.translate'])
+  ['ionic', 'ngCordova', 'pasvaz.bindonce', 'starter.controllers', 'ngAnimate', 'rmm', 'dateParser', 'pascalprecht.translate'])
 
 .provider('$initOptions', function $initOptionsProvider() {
   var str = window.localStorage.getItem("OPTIONS");
@@ -276,8 +276,8 @@ function($stateProvider, $urlRouterProvider, $initOptionsProvider, $translatePro
   $urlRouterProvider.otherwise($initOptionsProvider.defaultUrl);
 }])
 
-.run(['$ionicPlatform', '$translate', '$state', '$ionicHistory', '$settings',
-function($ionicPlatform, $translate, $state, $ionicHistory, $settings) {
+.run(['$ionicPlatform', '$translate', '$state', '$ionicHistory', '$settings', '$rmmTrack',
+function($ionicPlatform, $translate, $state, $ionicHistory, $settings, $rmmTrack) {
 
   //imposto la lingua a moment prima che parta cordova
   //  visto che solitamente parte dopo il caricamento della prima pagina
@@ -285,6 +285,9 @@ function($ionicPlatform, $translate, $state, $ionicHistory, $settings) {
   //console.log("Language moment " + moment.locale() + " translate " + $translate.use());
 
   $ionicPlatform.ready(function() {
+    //traccio l'apertura dell'app
+    $rmmTrack.start();
+    $rmmTrack.track("HOME");
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
     if(window.cordova && window.cordova.plugins.Keyboard) {
@@ -308,6 +311,11 @@ function($ionicPlatform, $translate, $state, $ionicHistory, $settings) {
       });
     }
 
+    //gesisco l'evento resume
+    $ionicPlatform.on('resume', function() {
+       $rmmTrack.event('APP_EVT', 'resume');
+    });
+
     //nascondo la splash screen al termine del caricamento
     if (navigator.splashscreen) {
       navigator.splashscreen.hide();
@@ -330,8 +338,8 @@ function($ionicPlatform, $translate, $state, $ionicHistory, $settings) {
 }]);
 
 angular.module('starter.controllers', ['starter.services'])
-.controller('AppCtrl', [ '$scope', '$settings', '$comicsData',
-function($scope, $settings, $comicsData) {
+.controller('AppCtrl', [ '$scope', '$settings', '$comicsData', '$rmmTrack',
+function($scope, $settings, $comicsData, $rmmTrack) {
   //
   console.log("***** Comikku STARTING");
   //

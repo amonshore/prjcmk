@@ -656,6 +656,7 @@ IonicModule
 //   }
 // ]);
 
+//
 IonicModule
 .factory('$dialogs', ['$q', 
 function($q) {
@@ -673,14 +674,38 @@ function($q) {
       );
 
       return q.promise;
+    }
+  };
+}]);
+
+//
+IonicModule
+.factory('$rmmTrack', ['$cordovaGoogleAnalytics', function($cordovaGoogleAnalytics) {
+  var gaUserId = 'USER_ID';
+
+  return {
+    start: function() {
+      console.log("starting track " + gaUserId);
+      //
+      if (window.cordova) {
+        $cordovaGoogleAnalytics.debugMode();
+        $cordovaGoogleAnalytics.startTrackerWithId('UA-59687686-1');
+        $cordovaGoogleAnalytics.setUserId(gaUserId);
+      }
     },
-    confirm: function(config) {
-      var opts = angular.extend({ message: "", title: "Confirm?", buttons: [ "Ok", "Cancel" ] }, config || {}); 
-      var q = $q.defer();
-      navigator.notification.confirm(opts.message, function(res) {
-        q.resolve(res); //buttonIndex
-      }, opts.title, opts.buttons);
-      return q.promise;
+    track: function(view) {
+      console.log("track view " + view);
+      //
+      if (window.cordova) {
+        $cordovaGoogleAnalytics.trackView(view);
+      }
+    },
+    event: function(category, action, label, value) {
+      console.log("track event " + category + ", " + action + ", " + label + ", " + value);
+      //
+      if (window.cordova) {
+        $cordovaGoogleAnalytics.trackEvent(category, action, label, value);
+      }
     }
   };
 }]);

@@ -13,3 +13,8 @@ plugins:
 - org.apache.cordova.globalization 0.3.3 "Globalization"
 - org.apache.cordova.splashscreen 0.3.5 "Splashscreen"
 - uk.co.whiteoctober.cordova.appversion 0.1.5 "AppVersion"
+
+---
+
+# novità
+- uso di ngCordova 
