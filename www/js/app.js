@@ -156,14 +156,14 @@ function($stateProvider, $urlRouterProvider, $initOptionsProvider, $translatePro
     .state('app', {
       url: "/app",
       abstract: true,
-      templateUrl: "templates/menu.html",
+      templateUrl: "templates/tabs.html",
       controller: 'AppCtrl'
     })
 
     .state('app.comics', {
       url: "/comics",
       views: {
-        'menuContent' :{
+        'app-comics' :{
           templateUrl: "templates/comics.html",
           controller: 'ComicsCtrl'
         }
@@ -172,7 +172,7 @@ function($stateProvider, $urlRouterProvider, $initOptionsProvider, $translatePro
     .state('app.comics_editor', {
       url: "/comics/:comicsId",
       views: {
-        'menuContent' :{
+        'app-comics' :{
           templateUrl: "templates/comicsEditor.html",
           controller: 'ComicsEditorCtrl'
         }
@@ -182,16 +182,16 @@ function($stateProvider, $urlRouterProvider, $initOptionsProvider, $translatePro
     .state('app.releases', {
       url: "/releases",
       views: {
-        'menuContent' :{
+        'app-releases' :{
           templateUrl: "templates/releases.html",
           controller: 'ReleasesEntryCtrl'
         }
       }
     })
     .state('app.releases_entry', {
-      url: "/releases/:comicsId",
+      url: "/comics/:comicsId/releases",
       views: {
-        'menuContent' :{
+        'app-comics' :{
           templateUrl: "templates/releases.html",
           controller: 'ReleasesEntryCtrl'
         }
@@ -200,7 +200,7 @@ function($stateProvider, $urlRouterProvider, $initOptionsProvider, $translatePro
     .state('app.release_editor', {
       url: "/release/:comicsId/:releaseId",
       views: {
-        'menuContent' :{
+        'app-releases' :{
           templateUrl: "templates/releaseEditor.html",
           controller: 'ReleaseEditorCtrl'
         }
@@ -210,7 +210,7 @@ function($stateProvider, $urlRouterProvider, $initOptionsProvider, $translatePro
     .state('app.wishlist', {
       url: "/wishlist",
       views: {
-        'menuContent' :{
+        'app-wishlist' :{
           templateUrl: "templates/releases.html",
           controller: 'ReleasesEntryCtrl'
         }
@@ -219,7 +219,7 @@ function($stateProvider, $urlRouterProvider, $initOptionsProvider, $translatePro
     .state('app.purchased', {
       url: "/purchased",
       views: {
-        'menuContent' :{
+        'app-purchased' :{
           templateUrl: "templates/releases.html",
           controller: 'ReleasesEntryCtrl'
         }
@@ -229,7 +229,7 @@ function($stateProvider, $urlRouterProvider, $initOptionsProvider, $translatePro
     .state('app.options', {
       url: "/options",
       views: {
-        'menuContent' :{
+        'app-options' :{
           templateUrl: "templates/options.html",
           controller: 'OptionsCtrl'
         }
@@ -238,7 +238,7 @@ function($stateProvider, $urlRouterProvider, $initOptionsProvider, $translatePro
     .state('app.settings', {
       url: "/settings",
       views: {
-        'menuContent' :{
+        'app-settings' :{
           templateUrl: "templates/settings.html",
           controller: 'OptionsCtrl'
         }
@@ -247,7 +247,7 @@ function($stateProvider, $urlRouterProvider, $initOptionsProvider, $translatePro
     .state('app.about', {
       url: "/about",
       views: {
-        'menuContent' :{
+        'app-about' :{
           templateUrl: "templates/about.html",
           controller: 'OptionsCtrl'
         }
@@ -256,7 +256,7 @@ function($stateProvider, $urlRouterProvider, $initOptionsProvider, $translatePro
     .state('app.backup', {
       url: "/backup",
       views: {
-        'menuContent' :{
+        'app-backup' :{
           templateUrl: "templates/backup.html",
           controller: 'OptionsCtrl'
         }
@@ -265,7 +265,7 @@ function($stateProvider, $urlRouterProvider, $initOptionsProvider, $translatePro
     .state('app.debug', {
       url: "/debug",
       views: {
-        'menuContent' :{
+        'app-debug' :{
           templateUrl: "templates/debug.html",
           controller: 'OptionsCtrl'
         }
@@ -292,6 +292,8 @@ function($ionicPlatform, $translate, $state, $ionicHistory, $settings, $rootScop
         $rmmTrack.start();
         $rmmTrack.view(toState.url);
         $rmmTrack.event('ROUTE_EVT', 'STATE_CHANGE_START', 'params', toParams);
+        //visualizzo nuovamente la barra delle tab eventualmente nascosta tramite l'attributo hide-tabs
+        $rootScope.hideTabs = false;
       });
     }
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard

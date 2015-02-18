@@ -1,4 +1,4 @@
-<ion-view title="{{entry.id == 'new' ? 'New comics entry': 'Edit comics entry' | translate}}">
+<ion-view title="{{entry.id == 'new' ? 'New comics entry': 'Edit comics entry' | translate}}" hide-tabs="true">
 
   <!-- pulsanti barra di navigazione -->
   <ion-nav-buttons side="secondary">
@@ -6,7 +6,7 @@
   </ion-nav-buttons>
 
   <!-- content -->
-  <ion-content class="has-header custom-header">
+  <ion-content class="has-header">
     <form name="data.form" novalidate class="validation-form">
 		  <label class="item item-input item-key">
 		  	<span class="input-label rmm-required" translate> Name</span>

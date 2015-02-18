@@ -629,6 +629,21 @@ IonicModule
     };
 } );
 
+//nascondo la barra delle tab
+IonicModule
+.directive('hideTabs', function($rootScope) {
+    return {
+        restrict: 'A',
+        link: function(scope, element, attributes) {
+            $rootScope.hideTabs = attributes.hideTabs;
+
+            scope.$on('$destroy', function() {
+                $rootScope.hideTabs = false;
+            });
+        }
+    };
+});
+
 // //https://github.com/driftyco/ionic/issues/2674
 // //thx to cbruun
 // //risolve il problema del menu laterale che non si chiude con lo swype
