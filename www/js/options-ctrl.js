@@ -3,11 +3,11 @@ angular.module('starter.controllers')
 	'$scope', '$q', '$ionicPopup', '$undoPopup', '$toast', '$ionicPopover', '$ionicModal', 
   '$file', '$timeout', '$filter', 
   '$comicsData', '$settings', '$ionicNavBarDelegate', '$translate', '$ionicHistory',
-  '$dialogs',
+  '$dialogs', '$cordovaDialogs', '$cordovaGoogleAnalytics',
 function($scope, $q, $ionicPopup, $undoPopup, $toast, $ionicPopover, $ionicModal, 
   $file, $timeout, $filter, 
   $comicsData, $settings, $ionicNavBarDelegate, $translate, $ionicHistory,
-  $dialogs) {
+  $dialogs, $cordovaDialogs, $cordovaGoogleAnalytics) {
   //
   //TODO caricare i dati in beforeExit
   //
@@ -173,9 +173,9 @@ function($scope, $q, $ionicPopup, $undoPopup, $toast, $ionicPopover, $ionicModal
         }
       });
     } else {
-      $dialogs.confirm({ title: $filter('translate')('Delete all data?'), 
-        message: $filter('translate')('You\'ll lose all comics and releases!'),
-        buttons: [ $filter('translate')('Cancel'), $filter('translate')('Delete') ] }).then(function(res) {
+      $cordovaDialogs.confirm($filter('translate')('You\'ll lose all comics and releases!'),
+        $filter('translate')('Delete all data?'),
+        [ $filter('translate')('Cancel'), $filter('translate')('Delete') ] ).then(function(res) {
           if (res === 2) { //delete
             $comicsData.clear();
             $comicsData.save();
@@ -228,9 +228,9 @@ function($scope, $q, $ionicPopup, $undoPopup, $toast, $ionicPopover, $ionicModal
         }
       });
     } else {
-      $dialogs.confirm({ title: $filter('translate')('Backup data?'), 
-        message: $filter('translate')('Previous backup will be overridden.'),
-        buttons: [ $filter('translate')('Cancel'), $filter('translate')('Backup') ] }).then(function(res) {
+      $cordovaDialogs.confirm($filter('translate')('Previous backup will be overridden.'),
+        $filter('translate')('Backup data?'),
+        [ $filter('translate')('Cancel'), $filter('translate')('Backup') ] ).then(function(res) {
           if (res === 2) { //backup
             $comicsData.backupDataToFile().then(function(res) {
               $scope.readLastBackup();
@@ -260,9 +260,9 @@ function($scope, $q, $ionicPopup, $undoPopup, $toast, $ionicPopover, $ionicModal
         }
       });
     } else {
-      $dialogs.confirm({ title: $filter('translate')('Restore data from backup?'), 
-        message: $filter('translate')('Current data will be overridden.'),
-        buttons: [ $filter('translate')('Cancel'), $filter('translate')('Restore') ] }).then(function(res) {
+      $cordovaDialogs.confirm($filter('translate')('Current data will be overridden.'),
+        $filter('translate')('Restore data from backup?'),
+        [ $filter('translate')('Cancel'), $filter('translate')('Restore') ] ).then(function(res) {
           if (res === 2) { //restore
             $comicsData.restoreDataFromFile().then(function(res) {
               $toast.show($filter('translate')('Restore complete'));
@@ -340,8 +340,11 @@ function($scope, $q, $ionicPopup, $undoPopup, $toast, $ionicPopover, $ionicModal
     // $scope.openPopover($event)
 
     // try {
-      console.log($ionicHistory.viewHistory());
-      
+
+      $cordovaGoogleAnalytics.debugMode();
+      $cordovaGoogleAnalytics.startTrackerWithId('UA-59687686-1').then(function(resp) {  console.log('*** startTrackerWithId ' + resp) });
+      $cordovaGoogleAnalytics.setUserId('USER_ID').then(function(resp) {  console.log('*** setUserId ' + resp) });
+      $cordovaGoogleAnalytics.trackView('OPTIONS_TEST').then(function(resp) {  console.log('*** trackView ' + resp) });
 
     // } catch (e) {
     //   console.log("TEST ERR" + e);

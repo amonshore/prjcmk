@@ -42,7 +42,7 @@
           <span class="comics-title"><i class="flaticon-reserved" bo-if="item.reserved=='T'"></i> {{item.name}}</span>
           <span class="comics-subtitle">{{item.publisher}}</span>
           <span class="comics-notes">{{getComicsInfo(item)}}</span>
-          <span class="comics-notes" bo-if="debugMode">last upd {{item.lastUpdate}} best {{item.bestRelease.date}} id {{item.id}}</span>
+          <!-- <span class="comics-notes" bo-if="debugMode">last upd {{item.lastUpdate}} best {{item.bestRelease.date}} id {{item.id}}</span> -->
         </div>
 
         <best-release comics="item" bo-if="item.bestRelease.number"></best-release>

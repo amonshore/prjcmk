@@ -1,6 +1,6 @@
 //
 angular.module('starter', 
-  ['ionic', 'pasvaz.bindonce', 'starter.controllers', 'ngAnimate', 'rmm', 'dateParser', 'pascalprecht.translate'])
+  ['ionic', 'ngCordova', 'pasvaz.bindonce', 'starter.controllers', 'ngAnimate', 'rmm', 'dateParser', 'pascalprecht.translate'])
 
 .provider('$initOptions', function $initOptionsProvider() {
   var str = window.localStorage.getItem("OPTIONS");
@@ -276,8 +276,8 @@ function($stateProvider, $urlRouterProvider, $initOptionsProvider, $translatePro
   $urlRouterProvider.otherwise($initOptionsProvider.defaultUrl);
 }])
 
-.run(['$ionicPlatform', '$translate', '$state', '$ionicHistory', '$settings',
-function($ionicPlatform, $translate, $state, $ionicHistory, $settings) {
+.run(['$ionicPlatform', '$translate', '$state', '$ionicHistory', '$settings', '$rootScope', '$rmmTrack',
+function($ionicPlatform, $translate, $state, $ionicHistory, $settings, $rootScope, $rmmTrack) {
 
   //imposto la lingua a moment prima che parta cordova
   //  visto che solitamente parte dopo il caricamento della prima pagina
@@ -285,6 +285,15 @@ function($ionicPlatform, $translate, $state, $ionicHistory, $settings) {
   //console.log("Language moment " + moment.locale() + " translate " + $translate.use());
 
   $ionicPlatform.ready(function() {
+    //inizializzo tracking
+    if ($settings.userOptions.traceEnabled == 'T') {
+      $rootScope.$on('$stateChangeStart',
+      function(event, toState, toParams, fromState, fromParams) {
+        $rmmTrack.start();
+        $rmmTrack.view(toState.url);
+        $rmmTrack.event('ROUTE_EVT', 'STATE_CHANGE_START', 'params', toParams);
+      });
+    }
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
     if(window.cordova && window.cordova.plugins.Keyboard) {
@@ -308,6 +317,15 @@ function($ionicPlatform, $translate, $state, $ionicHistory, $settings) {
       });
     }
 
+    //gesisco l'evento resume
+    $ionicPlatform.on('resume', function() {
+      if ($settings.userOptions.traceEnabled == 'T') {
+        $rmmTrack.start();
+        $rmmTrack.view('HOME');
+        $rmmTrack.event('APP_EVT', 'resume');
+      }
+    });
+
     //nascondo la splash screen al termine del caricamento
     if (navigator.splashscreen) {
       navigator.splashscreen.hide();
@@ -330,8 +348,8 @@ function($ionicPlatform, $translate, $state, $ionicHistory, $settings) {
 }]);
 
 angular.module('starter.controllers', ['starter.services'])
-.controller('AppCtrl', [ '$scope', '$settings', '$comicsData',
-function($scope, $settings, $comicsData) {
+.controller('AppCtrl', [ '$scope', '$settings', '$comicsData', '$rmmTrack',
+function($scope, $settings, $comicsData, $rmmTrack) {
   //
   console.log("***** Comikku STARTING");
   //

@@ -20,6 +20,7 @@
     "uk.co.whiteoctober.cordova.appversion",
     "org.apache.cordova.file",
     "org.apache.cordova.dialogs",
-    "am.armsoft.plugins.listpicker"
+    "am.armsoft.plugins.listpicker",
+    "https://github.com/danwilson/google-analytics-plugin.git"
   ]
 }

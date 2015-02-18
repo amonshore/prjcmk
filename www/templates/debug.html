@@ -17,6 +17,15 @@
 	  		<ion-item on-tap="repairData()" ng-if="userOptions.debugMode=='T'"><i class="icon ion-hammer"></i> Repair data</ion-item>
 	  		<ion-item on-tap="test($event)" ng-if="userOptions.debugMode=='T'"><i class="icon ion-arrow-graph-down-right"></i> Test {{testresult}}</ion-item>
 	  		<label class="item item-input" ng-if="userOptions.debugMode=='T'"><span class="input-label">Infinite scroll chunk</span><input type="number" ng-model="userOptions.infiniteScrollChunk" ng-change="optionsChanged()"></label>
+			  <ion-item class="item item-toggle" ng-if="userOptions.debugMode=='T'">
+					Trace enabled
+					<label class="toggle">
+						<input type="checkbox" ng-model="userOptions.traceEnabled" ng-true-value="'T'" ng-false-value="'F'" ng-change="optionsChanged()">
+						<div class="track">
+						<div class="handle"></div>
+						</div>
+					</label>
+				</ion-item>
 	  	</ion-list>
   	</form>
   </ion-content>

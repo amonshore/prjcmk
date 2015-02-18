@@ -393,7 +393,8 @@ function ($q, $filter, $utils, $file) {
 		defaultUrl: '/app/comics',
 		releaseGroupBy: 'week',
 		language: null, //system
-		infiniteScrollChunk: 20
+		infiniteScrollChunk: 20,
+		traceEnabled: 'T'
 	};
 
 	//localstorage DB
