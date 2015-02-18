@@ -276,8 +276,8 @@ function($stateProvider, $urlRouterProvider, $initOptionsProvider, $translatePro
   $urlRouterProvider.otherwise($initOptionsProvider.defaultUrl);
 }])
 
-.run(['$ionicPlatform', '$translate', '$state', '$ionicHistory', '$settings', '$rmmTrack',
-function($ionicPlatform, $translate, $state, $ionicHistory, $settings, $rmmTrack) {
+.run(['$ionicPlatform', '$translate', '$state', '$ionicHistory', '$settings', '$rootScope', '$rmmTrack',
+function($ionicPlatform, $translate, $state, $ionicHistory, $settings, $rootScope, $rmmTrack) {
 
   //imposto la lingua a moment prima che parta cordova
   //  visto che solitamente parte dopo il caricamento della prima pagina
@@ -285,9 +285,15 @@ function($ionicPlatform, $translate, $state, $ionicHistory, $settings, $rmmTrack
   //console.log("Language moment " + moment.locale() + " translate " + $translate.use());
 
   $ionicPlatform.ready(function() {
-    //traccio l'apertura dell'app
-    $rmmTrack.start();
-    $rmmTrack.track("HOME");
+    //inizializzo tracking
+    if ($settings.userOptions.traceEnabled == 'T') {
+      $rootScope.$on('$stateChangeStart',
+      function(event, toState, toParams, fromState, fromParams) {
+        $rmmTrack.start();
+        $rmmTrack.view(toState.url);
+        $rmmTrack.event('ROUTE_EVT', 'STATE_CHANGE_START', 'params', toParams);
+      });
+    }
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
     if(window.cordova && window.cordova.plugins.Keyboard) {
@@ -313,7 +319,11 @@ function($ionicPlatform, $translate, $state, $ionicHistory, $settings, $rmmTrack
 
     //gesisco l'evento resume
     $ionicPlatform.on('resume', function() {
-       $rmmTrack.event('APP_EVT', 'resume');
+      if ($settings.userOptions.traceEnabled == 'T') {
+        $rmmTrack.start();
+        $rmmTrack.view('HOME');
+        $rmmTrack.event('APP_EVT', 'resume');
+      }
     });
 
     //nascondo la splash screen al termine del caricamento

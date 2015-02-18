@@ -681,30 +681,30 @@ function($q) {
 //
 IonicModule
 .factory('$rmmTrack', ['$cordovaGoogleAnalytics', function($cordovaGoogleAnalytics) {
-  var gaUserId = 'USER_ID';
+  var gaUserId = 'UID_' + (new Date()).getTime();
 
   return {
     start: function() {
-      console.log("starting track " + gaUserId);
-      //
       if (window.cordova) {
         $cordovaGoogleAnalytics.debugMode();
         $cordovaGoogleAnalytics.startTrackerWithId('UA-59687686-1');
         $cordovaGoogleAnalytics.setUserId(gaUserId);
+      } else {
+        console.log("starting track ", gaUserId);
       }
     },
-    track: function(view) {
-      console.log("track view " + view);
-      //
+    view: function(view) {
       if (window.cordova) {
         $cordovaGoogleAnalytics.trackView(view);
+      } else {
+        console.log("track view ", view);
       }
     },
     event: function(category, action, label, value) {
-      console.log("track event " + category + ", " + action + ", " + label + ", " + value);
-      //
       if (window.cordova) {
         $cordovaGoogleAnalytics.trackEvent(category, action, label, value);
+      } else {
+        console.log("track event ", category, action, label, value);
       }
     }
   };
