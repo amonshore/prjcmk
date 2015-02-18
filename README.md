@@ -13,8 +13,12 @@ plugins:
 - org.apache.cordova.globalization 0.3.3 "Globalization"
 - org.apache.cordova.splashscreen 0.3.5 "Splashscreen"
 - uk.co.whiteoctober.cordova.appversion 0.1.5 "AppVersion"
+- com.danielcwilson.plugins.googleanalytics 0.6.1 "Google Universal Analytics Plugin"
 
 ---
 
 # novità
 - uso di ngCordova 
+
+Ver. 0.0.8
+- aggiunto supporto a Google Analytics
