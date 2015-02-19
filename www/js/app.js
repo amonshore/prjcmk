@@ -197,8 +197,17 @@ function($stateProvider, $urlRouterProvider, $initOptionsProvider, $translatePro
         }
       }
     })
-    .state('app.release_editor', {
-      url: "/release/:comicsId/:releaseId",
+    .state('app.comics_release_editor', {
+      url: "/comics/:comicsId/releases/:releaseId",
+      views: {
+        'app-comics' :{
+          templateUrl: "templates/releaseEditor.html",
+          controller: 'ReleaseEditorCtrl'
+        }
+      }
+    })
+    .state('app.releases_release_editor', {
+      url: "/comics/:comicsId/releases/:releaseId",
       views: {
         'app-releases' :{
           templateUrl: "templates/releaseEditor.html",

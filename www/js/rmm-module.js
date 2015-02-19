@@ -635,7 +635,7 @@ IonicModule
     return {
         restrict: 'A',
         link: function(scope, element, attributes) {
-            $rootScope.hideTabs = attributes.hideTabs;
+            $rootScope.hideTabs = (attributes.hideTabs == 'true');
 
             scope.$on('$destroy', function() {
                 $rootScope.hideTabs = false;

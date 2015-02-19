@@ -217,13 +217,18 @@ function($scope, $ionicModal, $timeout, $state, $undoPopup, $utils, $toast, $ion
 	  	var release = $scope.selectedReleases[0];
 			item = $comicsData.getComicsById(release.comicsId);
 		}
-    $state.go('app.release_editor', {comicsId: item.id, releaseId: 'new'});
+		console.log("aaaa", $state.is('app.releases_entry'))
+		if ($state.is('app.releases_entry')) {
+			$state.go('app.comics_release_editor', {comicsId: item.id, releaseId: 'new'});
+		} else {
+    	$state.go('app.releases_release_editor', {comicsId: item.id, releaseId: 'new'});
+  	}
   };
   //
   $scope.editReleaseEntry = function(release) {
   	release = release || $scope.selectedReleases[0];
 		var cid = $comicsData.getComicsById(release.comicsId).id;
-		$state.go('app.release_editor', {comicsId: cid, releaseId: release.number});
+		$state.go('app.releases_release_editor', {comicsId: cid, releaseId: release.number});
   };
   //
   $scope.removeReleaseEntry = function(bAll) {

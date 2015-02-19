@@ -145,7 +145,7 @@ function($scope, $ionicModal, $timeout, $state, $filter, $undoPopup, $utils, $de
 	//apre te template per l'editing dell'uscita
 	$scope.showAddRelease = function(item) {
 		item = item || $scope.selectedComics[0];
-		$state.go('app.release_editor', {comicsId: item.id, releaseId: 'new'});
+		$state.go('app.comics_release_editor', {comicsId: item.id, releaseId: 'new'});
 	};
 	//
 	$scope.showNavBar = function() {

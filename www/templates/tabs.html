@@ -1,4 +1,4 @@
-<ion-tabs class="tabs-icon-only" ng-class="{'tabs-item-hide': $root.hideTabs}">
+<ion-tabs class="tabs-default tabs-icon-only" ng-class="{'tabs-item-hide': $root.hideTabs}">
 
   <ion-tab icon-off="icon flaticon-comics" icon-on="icon flaticon-comics" href="#/app/comics">
     <ion-nav-view name="app-comics"></ion-nav-view>
@@ -10,6 +10,10 @@
 
   <ion-tab icon-off="icon flaticon-wishlist" icon-on="icon flaticon-wishlist" href="#/app/wishlist">
     <ion-nav-view name="app-wishlist"></ion-nav-view>
+  </ion-tab>
+
+  <ion-tab icon-off="icon flaticon-npurchased" icon-on="icon flaticon-npurchased" href="#/app/store">
+    <ion-nav-view name="app-store"></ion-nav-view>
   </ion-tab>
 
 </ion-tabs>
