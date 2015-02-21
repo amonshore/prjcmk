@@ -19,7 +19,7 @@
     </div>
   </ion-header-bar>
 
-  <ion-content ng-class="{'custom-header': !entry, 'custom-header-small': !!entry}" has-bouncing="true">
+  <ion-content ng-class="{'has-header': !entry, 'custom-header-small': !!entry}" has-bouncing="true">
     <ion-list>
       <ion-item class="item item-release" ng-repeat="item in releases track by item._kk" id="{{item._kk}}">
         <!-- se non ha comicsId è l'intestazione del gruppo -->

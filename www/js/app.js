@@ -215,6 +215,15 @@ function($stateProvider, $urlRouterProvider, $initOptionsProvider, $translatePro
         }
       }
     })
+    .state('app.wishlist_release_editor', {
+      url: "/comics/:comicsId/releases/:releaseId",
+      views: {
+        'app-wishlist' :{
+          templateUrl: "templates/releaseEditor.html",
+          controller: 'ReleaseEditorCtrl'
+        }
+      }
+    })
 
     .state('app.wishlist', {
       url: "/wishlist",
@@ -285,8 +294,8 @@ function($stateProvider, $urlRouterProvider, $initOptionsProvider, $translatePro
   $urlRouterProvider.otherwise($initOptionsProvider.defaultUrl);
 }])
 
-.run(['$ionicPlatform', '$translate', '$state', '$ionicHistory', '$settings', '$rootScope', '$rmmTrack',
-function($ionicPlatform, $translate, $state, $ionicHistory, $settings, $rootScope, $rmmTrack) {
+.run(['$ionicPlatform', '$translate', '$state', '$ionicHistory', '$settings', '$rootScope', '$rmmTrack', '$ionicActionSheet', '$filter',
+function($ionicPlatform, $translate, $state, $ionicHistory, $settings, $rootScope, $rmmTrack, $ionicActionSheet, $filter) {
 
   //imposto la lingua a moment prima che parta cordova
   //  visto che solitamente parte dopo il caricamento della prima pagina
@@ -337,6 +346,44 @@ function($ionicPlatform, $translate, $state, $ionicHistory, $settings, $rootScop
       }
     });
 
+    //gestisco il pulsante harware del menu su dispositivi android
+    //  per aprire l'action sheet
+    var fnActionSheetHide;
+    function showActionSheet() {
+      if (fnActionSheetHide) {
+        fnActionSheetHide();
+      } else {
+        fnActionSheetHide = $ionicActionSheet.show({
+          buttons: [
+              { text: $filter('translate')('Settings') },
+              { text: $filter('translate')('Data') },
+              { text: $filter('translate')('About Comikku') }
+            ],
+          cancel: function() {
+            fnActionSheetHide = null;
+          },
+          buttonClicked: function(index) {
+            if (index == 0) {
+              $state.go('app.settings');
+            } else if (index == 1) {
+              $state.go('app.backup');
+            } else {
+              $state.go('app.about');
+            }
+            fnActionSheetHide = null;
+            return true;
+          }
+         });
+      }
+    }
+    if (window.cordova) {
+      document.addEventListener("menubutton", showActionSheet, false);
+    } else {
+      document.addEventListener("keypress", function(evt) {
+        if (evt.which == 109) { showActionSheet(); }
+      }, false);
+    }
+
     //nascondo la splash screen al termine del caricamento
     if (navigator.splashscreen) {
       navigator.splashscreen.hide();
@@ -373,5 +420,7 @@ function($scope, $settings, $comicsData, $rmmTrack) {
   $scope.$on('$ionicView.beforeEnter', function(scopes, states) {
     $scope.uid = $comicsData.uid;
     $scope.debugMode = ($settings.userOptions.debugMode == 'T');
-  });  
+  });
+  //
+
 }]);

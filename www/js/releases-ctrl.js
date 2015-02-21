@@ -217,9 +217,10 @@ function($scope, $ionicModal, $timeout, $state, $undoPopup, $utils, $toast, $ion
 	  	var release = $scope.selectedReleases[0];
 			item = $comicsData.getComicsById(release.comicsId);
 		}
-		console.log("aaaa", $state.is('app.releases_entry'))
 		if ($state.is('app.releases_entry')) {
 			$state.go('app.comics_release_editor', {comicsId: item.id, releaseId: 'new'});
+		} else if ($state.is('app.wishlist')) {
+			$state.go('app.wishlist_release_editor', {comicsId: item.id, releaseId: 'new'});
 		} else {
     	$state.go('app.releases_release_editor', {comicsId: item.id, releaseId: 'new'});
   	}
@@ -228,7 +229,13 @@ function($scope, $ionicModal, $timeout, $state, $undoPopup, $utils, $toast, $ion
   $scope.editReleaseEntry = function(release) {
   	release = release || $scope.selectedReleases[0];
 		var cid = $comicsData.getComicsById(release.comicsId).id;
-		$state.go('app.releases_release_editor', {comicsId: cid, releaseId: release.number});
+		if ($state.is('app.releases_entry')) {
+			$state.go('app.comics_release_editor', {comicsId: cid, releaseId: release.number});
+		} else if ($state.is('app.wishlist')) {
+			$state.go('app.wishlist_release_editor', {comicsId: cid, releaseId: release.number});
+		} else {
+			$state.go('app.releases_release_editor', {comicsId: cid, releaseId: release.number});
+  	}
   };
   //
   $scope.removeReleaseEntry = function(bAll) {
