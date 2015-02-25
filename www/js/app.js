@@ -305,14 +305,22 @@ function($ionicPlatform, $translate, $state, $ionicHistory, $settings, $rootScop
   $ionicPlatform.ready(function() {
     //inizializzo tracking
     if ($settings.userOptions.traceEnabled == 'T') {
-      $rootScope.$on('$stateChangeStart',
+      $rootScope.$on('$stateChangeSuccess',
       function(event, toState, toParams, fromState, fromParams) {
         $rmmTrack.start();
         $rmmTrack.view(toState.url);
         $rmmTrack.event('ROUTE_EVT', 'STATE_CHANGE_START', 'params', toParams);
         //visualizzo nuovamente la barra delle tab eventualmente nascosta tramite l'attributo hide-tabs
+        //console.log('$stateChangeSuccess', toState, toParams, fromState, fromParams);
         $rootScope.hideTabs = false;
       });
+    } else {
+      $rootScope.$on('$stateChangeSuccess',
+      function(event, toState, toParams, fromState, fromParams) {
+        //visualizzo nuovamente la barra delle tab eventualmente nascosta tramite l'attributo hide-tabs
+        //console.log('$stateChangeSuccess', toState, toParams, fromState, fromParams);
+        $rootScope.hideTabs = false;
+      });      
     }
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -421,6 +429,4 @@ function($scope, $settings, $comicsData, $rmmTrack) {
     $scope.uid = $comicsData.uid;
     $scope.debugMode = ($settings.userOptions.debugMode == 'T');
   });
-  //
-
 }]);

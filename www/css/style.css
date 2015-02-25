@@ -93,6 +93,8 @@
 .bar.bar-header.bar-options {
 	background-color: #FFFFFF;
 	border-bottom-color: #33B5E5;
+	border-bottom-width: 3px;
+	border-bottom-style: solid;
 }
 .bar.bar-header.bar-options .button {
 	color: #666666;
@@ -126,12 +128,16 @@
 }
 
 .tabs-top.tabs-striped .tab-item {
-	color: #C3C3C3;
+	color: #EAE0BC;
+}
+.tabs-top > .tabs, .tabs.tabs-top {
+	border-bottom-color: #ffc900;
 }
 .tabs-top.tabs-striped .tab-item.tab-item-active, 
 .tabs-top.tabs-striped .tab-item.active, 
 .tabs-top.tabs-striped .tab-item.activated {
 	border-bottom-color: #ffc900;
+	border-bottom-width: 4px!important;
 	color: #ffc900;
 }
 

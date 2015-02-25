@@ -637,6 +637,11 @@ IonicModule
         link: function(scope, element, attributes) {
             $rootScope.hideTabs = (attributes.hideTabs == 'true');
 
+            // scope.$on('$ionicView.beforeEnter', function(scopes, states) {
+            //   $rootScope.hideTabs = (attributes.hideTabs == 'true');
+            //   console.log('rmm $ionicView.beforeEnter', $rootScope.hideTabs)
+            // });
+
             scope.$on('$destroy', function() {
                 $rootScope.hideTabs = false;
             });

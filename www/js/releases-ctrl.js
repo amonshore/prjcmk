@@ -515,9 +515,12 @@ function($scope, $stateParams, $ionicHistory, $comicsData, $settings,
     angular.copy(release, $scope.master);
     $comicsData.updateRelease($scope.entry, $scope.master);
     $comicsData.save();
+    //$ionicHistory.backView().stateParams = angular.extend($ionicHistory.backView().stateParams, { 'forceHideTabs': 'yes' });
     $ionicHistory.goBack();
-  	//console.log($ionicHistory.backView());
-    //$state.go($ionicHistory.backView().stateName, $ionicHistory.backView().stateParams, {'reload': true});
+
+   //  var pars = angular.extend($ionicHistory.backView().stateParams, { 'forceHideTabs': 'yes' });
+  	// console.log('PARS', pars);
+   //  $state.go($ionicHistory.backView().stateName, pars);
   };
   $scope.reset = function() {
     $scope.release = angular.copy($scope.master);
