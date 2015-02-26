@@ -317,6 +317,14 @@ function($scope, $ionicModal, $timeout, $state, $filter, $undoPopup, $utils, $de
 		changeOrder();
 		applyFilter();
 	};
+	//
+	$scope.switchOrderby = function() {
+		if ($scope.orderBy == 'bestRelease') { $scope.orderBy = 'name'; }
+		else if ($scope.orderBy == 'name') { $scope.orderBy = 'bestRelease'; }
+		$scope.orderByDesc = false;
+		changeOrder();
+		applyFilter();
+	}
 	//NB meglio registrare il back button ogni volta che si entra nella modalità opzioni
 	//gestisco il back hw in base a quello che sto facendo
 	// $scope._deregisterBackButton = $ionicPlatform.registerBackButtonAction(function() {

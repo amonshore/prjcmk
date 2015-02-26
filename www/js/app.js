@@ -169,7 +169,7 @@ function($stateProvider, $urlRouterProvider, $initOptionsProvider, $translatePro
         }
       }
     })
-    .state('app.comics_editor', {
+/*    .state('app.comics_editor', {
       url: "/comics/:comicsId",
       views: {
         'app-comics' :{
@@ -177,7 +177,7 @@ function($stateProvider, $urlRouterProvider, $initOptionsProvider, $translatePro
           controller: 'ComicsEditorCtrl'
         }
       }
-    })
+    })*/
 
     .state('app.releases', {
       url: "/releases",
@@ -197,7 +197,7 @@ function($stateProvider, $urlRouterProvider, $initOptionsProvider, $translatePro
         }
       }
     })
-    .state('app.comics_release_editor', {
+/*    .state('app.comics_release_editor', {
       url: "/comics/:comicsId/releases/:releaseId",
       views: {
         'app-comics' :{
@@ -223,7 +223,7 @@ function($stateProvider, $urlRouterProvider, $initOptionsProvider, $translatePro
           controller: 'ReleaseEditorCtrl'
         }
       }
-    })
+    })*/
 
     .state('app.wishlist', {
       url: "/wishlist",
