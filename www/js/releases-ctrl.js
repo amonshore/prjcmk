@@ -2,10 +2,10 @@ angular.module('starter.controllers')
 .controller('ReleasesEntryCtrl', [
 	'$scope', '$ionicModal', '$timeout', '$state', '$undoPopup', '$utils', '$toast', '$ionicPopover',
 	'$stateParams', '$debounce', '$ionicScrollDelegate', '$ionicNavBarDelegate', '$ionicPlatform', '$filter', 
-	'$comicsData', '$settings', '$dateParser', '$templateCache', '$ionicHistory',
+	'$comicsData', '$settings', '$dateParser', '$templateCache', '$ionicHistory', '$q',
 function($scope, $ionicModal, $timeout, $state, $undoPopup, $utils, $toast, $ionicPopover, 
 	$stateParams, $debounce, $ionicScrollDelegate, $ionicNavBarDelegate, $ionicPlatform, $filter, 
-	$comicsData, $settings, $dateParser, $templateCache, $ionicHistory) {
+	$comicsData, $settings, $dateParser, $templateCache, $ionicHistory, $q) {
 
   //
   var today = moment().format('YYYY-MM-DD');
@@ -211,19 +211,68 @@ function($scope, $ionicModal, $timeout, $state, $undoPopup, $utils, $toast, $ion
 		return $scope.releases && items && $scope.releases.length < items.length;
 	};
 
+	//creo il modal per l'editor
+	$scope.editorModal = null;
+	$scope.editorData = {};
+	$scope.editorEntry = null;
+	$scope.editorRelease = null;
+	$scope.editorReleaseMaster = null;
+	$scope.getEditorModal = function() {
+		var q = $q.defer();
+		if ($scope.editorModal == null) {
+			$ionicModal.fromTemplateUrl('templates/releaseEditorModal.html', {
+				scope: $scope,
+				// focusFirstInput: true,
+				animation: 'slide-in-up'
+			}).then(function(modal) {
+				$scope.editorModal = modal;
+				q.resolve($scope.editorModal);
+			});
+		} else {
+			q.resolve($scope.editorModal);
+		}
+		return q.promise;
+	};
+  $scope.editorUpdate = function(release) {
+	  angular.copy(release, $scope.editorReleaseMaster);
+	  $comicsData.updateRelease($scope.editorEntry, $scope.editorReleaseMaster);
+	  $comicsData.save();
+	  $scope.editorModal.hide();
+	  $scope.showNavBar();
+	  changeGroup();
+	  applyFilter();
+  };
+  $scope.editorCancel = function() {
+  	$scope.editorModal.hide();
+  	$scope.showNavBar();
+  }
+  $scope.editorIsUnique = function(release) {
+    return $scope.editorReleaseMaster.number == release.number || $comicsData.isReleaseUnique($scope.editorEntry, release);
+  };
+
   //apre te template per l'editing dell'uscita
   $scope.showAddRelease = function(item) {
-  	if (!item) {
-	  	var release = $scope.selectedReleases[0];
-			item = $comicsData.getComicsById(release.comicsId);
-		}
-    $state.go('app.release_editor', {comicsId: item.id, releaseId: 'new'});
+  	$scope.editorEntry = item || $comicsData.getComicsById($scope.selectedReleases[0].comicsId);
+		$scope.getEditorModal().then(function() {
+		  if ($settings.userOptions.autoFillReleaseData == 'T') {
+				$scope.editorReleaseMaster = $comicsData.getReleaseById($scope.editorEntry, 'next');
+	    	$scope.editorReleaseMaster.price = $scope.editorEntry.price;
+		  } else {
+				$scope.editorReleaseMaster = $comicsData.getReleaseById($scope.editorEntry, 'new');
+			}
+			$scope.editorModal.scope.editorRelease = angular.copy($scope.editorReleaseMaster);
+			$scope.editorModal.show();
+		});
   };
   //
   $scope.editReleaseEntry = function(release) {
   	release = release || $scope.selectedReleases[0];
-		var cid = $comicsData.getComicsById(release.comicsId).id;
-		$state.go('app.release_editor', {comicsId: cid, releaseId: release.number});
+  	$scope.editorEntry = $comicsData.getComicsById(release.comicsId);
+		$scope.getEditorModal().then(function() {
+			$scope.editorReleaseMaster = release;
+			$scope.editorModal.scope.editorRelease = angular.copy($scope.editorReleaseMaster);
+			$scope.editorModal.show();
+		});
   };
   //
   $scope.removeReleaseEntry = function(bAll) {
@@ -461,7 +510,7 @@ function($scope, $ionicModal, $timeout, $state, $undoPopup, $utils, $toast, $ion
     templateUrl: 'templates/comicsRelease.html'
   };
 })
-.controller('ReleaseEditorCtrl', [
+/*.controller('ReleaseEditorCtrl', [
 	'$scope', '$stateParams', '$ionicHistory', '$comicsData', '$settings',
 	'$filter', '$dateParser', '$state',
 function($scope, $stateParams, $ionicHistory, $comicsData, $settings,
@@ -503,9 +552,12 @@ function($scope, $stateParams, $ionicHistory, $comicsData, $settings,
     angular.copy(release, $scope.master);
     $comicsData.updateRelease($scope.entry, $scope.master);
     $comicsData.save();
+    //$ionicHistory.backView().stateParams = angular.extend($ionicHistory.backView().stateParams, { 'forceHideTabs': 'yes' });
     $ionicHistory.goBack();
-  	//console.log($ionicHistory.backView());
-    //$state.go($ionicHistory.backView().stateName, $ionicHistory.backView().stateParams, {'reload': true});
+
+   //  var pars = angular.extend($ionicHistory.backView().stateParams, { 'forceHideTabs': 'yes' });
+  	// console.log('PARS', pars);
+   //  $state.go($ionicHistory.backView().stateName, pars);
   };
   $scope.reset = function() {
     $scope.release = angular.copy($scope.master);
@@ -517,4 +569,4 @@ function($scope, $stateParams, $ionicHistory, $comicsData, $settings,
     return $stateParams.releaseId == release.number || $comicsData.isReleaseUnique($scope.entry, release);
   };
   $scope.reset();
-}]);
+}])*/;

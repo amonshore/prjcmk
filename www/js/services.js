@@ -147,6 +147,22 @@ function ($q, $filter, $utils, $file) {
 		getReleaseById: function(item, id) {
 	  	if (id == "new") {
 	  		return this.newRelease({ comicsId: item.id });
+	  	} else if (id == "next") {
+				var release = this.newRelease({ comicsId: item.id });
+		    var maxrel = _.max(item.releases, function(rel) { return rel.number; });
+		    if (_.isEmpty(maxrel)) {
+		      release.number = 1;
+		    } else if (maxrel.number > 0) {
+		    	//numero +1
+		      release.number = maxrel.number + 1;
+		      //data uscita + periodicità
+		      if (!_.isEmpty(item.periodicity) && maxrel.date) {
+		      	var type = item.periodicity.charAt(0);
+		    		var amount = parseInt(item.periodicity.substr(1));
+		    		release.date = moment(maxrel.date).add(amount, type).format('YYYY-MM-DD');
+		      }
+		    }
+		    return release;
 	  	} else {
 	  		return _.findWhere(item.releases, { number: parseInt(id) }) || this.newRelease({ comicsId: item.id });
 		  }

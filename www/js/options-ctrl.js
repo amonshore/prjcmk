@@ -3,11 +3,11 @@ angular.module('starter.controllers')
 	'$scope', '$q', '$ionicPopup', '$undoPopup', '$toast', '$ionicPopover', '$ionicModal', 
   '$file', '$timeout', '$filter', 
   '$comicsData', '$settings', '$ionicNavBarDelegate', '$translate', '$ionicHistory',
-  '$dialogs', '$cordovaDialogs', '$cordovaGoogleAnalytics',
+  '$dialogs', '$cordovaDialogs', '$state',
 function($scope, $q, $ionicPopup, $undoPopup, $toast, $ionicPopover, $ionicModal, 
   $file, $timeout, $filter, 
   $comicsData, $settings, $ionicNavBarDelegate, $translate, $ionicHistory,
-  $dialogs, $cordovaDialogs, $cordovaGoogleAnalytics) {
+  $dialogs, $cordovaDialogs, $state) {
   //
   //TODO caricare i dati in beforeExit
   //
@@ -283,8 +283,9 @@ function($scope, $q, $ionicPopup, $undoPopup, $toast, $ionicPopover, $ionicModal
       $scope.avatarTapped = 5;
     }
     if (--$scope.avatarTapped <= 0) {
-      $settings.userOptions.debugMode = 'T';
-      $toast.show("Debug mode enabled!");
+      //$settings.userOptions.debugMode = 'T';
+      //$toast.show("Debug mode enabled!");
+      $state.go('app.debug');
     } else if ($scope.avatarTapped <= 3) {
       $toast.show("You are now " + $scope.avatarTapped + " steps away from debug mode!");
     }
@@ -341,11 +342,7 @@ function($scope, $q, $ionicPopup, $undoPopup, $toast, $ionicPopover, $ionicModal
 
     // try {
 
-      $cordovaGoogleAnalytics.debugMode();
-      $cordovaGoogleAnalytics.startTrackerWithId('UA-59687686-1').then(function(resp) {  console.log('*** startTrackerWithId ' + resp) });
-      $cordovaGoogleAnalytics.setUserId('USER_ID').then(function(resp) {  console.log('*** setUserId ' + resp) });
-      $cordovaGoogleAnalytics.trackView('OPTIONS_TEST').then(function(resp) {  console.log('*** trackView ' + resp) });
-
+    
     // } catch (e) {
     //   console.log("TEST ERR" + e);
     // }

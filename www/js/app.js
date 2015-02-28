@@ -156,61 +156,79 @@ function($stateProvider, $urlRouterProvider, $initOptionsProvider, $translatePro
     .state('app', {
       url: "/app",
       abstract: true,
-      templateUrl: "templates/menu.html",
+      templateUrl: "templates/tabs.html",
       controller: 'AppCtrl'
     })
 
     .state('app.comics', {
       url: "/comics",
       views: {
-        'menuContent' :{
+        'app-comics' :{
           templateUrl: "templates/comics.html",
           controller: 'ComicsCtrl'
         }
       }
     })
-    .state('app.comics_editor', {
+/*    .state('app.comics_editor', {
       url: "/comics/:comicsId",
       views: {
-        'menuContent' :{
+        'app-comics' :{
           templateUrl: "templates/comicsEditor.html",
           controller: 'ComicsEditorCtrl'
         }
       }
-    })
+    })*/
 
     .state('app.releases', {
       url: "/releases",
       views: {
-        'menuContent' :{
+        'app-releases' :{
           templateUrl: "templates/releases.html",
           controller: 'ReleasesEntryCtrl'
         }
       }
     })
     .state('app.releases_entry', {
-      url: "/releases/:comicsId",
+      url: "/comics/:comicsId/releases",
       views: {
-        'menuContent' :{
+        'app-comics' :{
           templateUrl: "templates/releases.html",
           controller: 'ReleasesEntryCtrl'
         }
       }
     })
-    .state('app.release_editor', {
-      url: "/release/:comicsId/:releaseId",
+/*    .state('app.comics_release_editor', {
+      url: "/comics/:comicsId/releases/:releaseId",
       views: {
-        'menuContent' :{
+        'app-comics' :{
           templateUrl: "templates/releaseEditor.html",
           controller: 'ReleaseEditorCtrl'
         }
       }
     })
+    .state('app.releases_release_editor', {
+      url: "/comics/:comicsId/releases/:releaseId",
+      views: {
+        'app-releases' :{
+          templateUrl: "templates/releaseEditor.html",
+          controller: 'ReleaseEditorCtrl'
+        }
+      }
+    })
+    .state('app.wishlist_release_editor', {
+      url: "/comics/:comicsId/releases/:releaseId",
+      views: {
+        'app-wishlist' :{
+          templateUrl: "templates/releaseEditor.html",
+          controller: 'ReleaseEditorCtrl'
+        }
+      }
+    })*/
 
     .state('app.wishlist', {
       url: "/wishlist",
       views: {
-        'menuContent' :{
+        'app-wishlist' :{
           templateUrl: "templates/releases.html",
           controller: 'ReleasesEntryCtrl'
         }
@@ -219,7 +237,7 @@ function($stateProvider, $urlRouterProvider, $initOptionsProvider, $translatePro
     .state('app.purchased', {
       url: "/purchased",
       views: {
-        'menuContent' :{
+        'app-purchased' :{
           templateUrl: "templates/releases.html",
           controller: 'ReleasesEntryCtrl'
         }
@@ -229,7 +247,7 @@ function($stateProvider, $urlRouterProvider, $initOptionsProvider, $translatePro
     .state('app.options', {
       url: "/options",
       views: {
-        'menuContent' :{
+        'app-options' :{
           templateUrl: "templates/options.html",
           controller: 'OptionsCtrl'
         }
@@ -238,7 +256,7 @@ function($stateProvider, $urlRouterProvider, $initOptionsProvider, $translatePro
     .state('app.settings', {
       url: "/settings",
       views: {
-        'menuContent' :{
+        'app-settings' :{
           templateUrl: "templates/settings.html",
           controller: 'OptionsCtrl'
         }
@@ -247,7 +265,7 @@ function($stateProvider, $urlRouterProvider, $initOptionsProvider, $translatePro
     .state('app.about', {
       url: "/about",
       views: {
-        'menuContent' :{
+        'app-about' :{
           templateUrl: "templates/about.html",
           controller: 'OptionsCtrl'
         }
@@ -256,7 +274,7 @@ function($stateProvider, $urlRouterProvider, $initOptionsProvider, $translatePro
     .state('app.backup', {
       url: "/backup",
       views: {
-        'menuContent' :{
+        'app-backup' :{
           templateUrl: "templates/backup.html",
           controller: 'OptionsCtrl'
         }
@@ -265,7 +283,7 @@ function($stateProvider, $urlRouterProvider, $initOptionsProvider, $translatePro
     .state('app.debug', {
       url: "/debug",
       views: {
-        'menuContent' :{
+        'app-debug' :{
           templateUrl: "templates/debug.html",
           controller: 'OptionsCtrl'
         }
@@ -276,8 +294,8 @@ function($stateProvider, $urlRouterProvider, $initOptionsProvider, $translatePro
   $urlRouterProvider.otherwise($initOptionsProvider.defaultUrl);
 }])
 
-.run(['$ionicPlatform', '$translate', '$state', '$ionicHistory', '$settings', '$rootScope', '$rmmTrack',
-function($ionicPlatform, $translate, $state, $ionicHistory, $settings, $rootScope, $rmmTrack) {
+.run(['$ionicPlatform', '$translate', '$state', '$ionicHistory', '$settings', '$rootScope', '$rmmTrack', '$ionicActionSheet', '$filter',
+function($ionicPlatform, $translate, $state, $ionicHistory, $settings, $rootScope, $rmmTrack, $ionicActionSheet, $filter) {
 
   //imposto la lingua a moment prima che parta cordova
   //  visto che solitamente parte dopo il caricamento della prima pagina
@@ -287,12 +305,22 @@ function($ionicPlatform, $translate, $state, $ionicHistory, $settings, $rootScop
   $ionicPlatform.ready(function() {
     //inizializzo tracking
     if ($settings.userOptions.traceEnabled == 'T') {
-      $rootScope.$on('$stateChangeStart',
+      $rootScope.$on('$stateChangeSuccess',
       function(event, toState, toParams, fromState, fromParams) {
         $rmmTrack.start();
         $rmmTrack.view(toState.url);
         $rmmTrack.event('ROUTE_EVT', 'STATE_CHANGE_START', 'params', toParams);
+        //visualizzo nuovamente la barra delle tab eventualmente nascosta tramite l'attributo hide-tabs
+        //console.log('$stateChangeSuccess', toState, toParams, fromState, fromParams);
+        $rootScope.hideTabs = false;
       });
+    } else {
+      $rootScope.$on('$stateChangeSuccess',
+      function(event, toState, toParams, fromState, fromParams) {
+        //visualizzo nuovamente la barra delle tab eventualmente nascosta tramite l'attributo hide-tabs
+        //console.log('$stateChangeSuccess', toState, toParams, fromState, fromParams);
+        $rootScope.hideTabs = false;
+      });      
     }
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -325,6 +353,44 @@ function($ionicPlatform, $translate, $state, $ionicHistory, $settings, $rootScop
         $rmmTrack.event('APP_EVT', 'resume');
       }
     });
+
+    //gestisco il pulsante harware del menu su dispositivi android
+    //  per aprire l'action sheet
+    var fnActionSheetHide;
+    function showActionSheet() {
+      if (fnActionSheetHide) {
+        fnActionSheetHide();
+      } else {
+        fnActionSheetHide = $ionicActionSheet.show({
+          buttons: [
+              { text: $filter('translate')('Settings') },
+              { text: $filter('translate')('Data') },
+              { text: $filter('translate')('About Comikku') }
+            ],
+          cancel: function() {
+            fnActionSheetHide = null;
+          },
+          buttonClicked: function(index) {
+            if (index == 0) {
+              $state.go('app.settings');
+            } else if (index == 1) {
+              $state.go('app.backup');
+            } else {
+              $state.go('app.about');
+            }
+            fnActionSheetHide = null;
+            return true;
+          }
+         });
+      }
+    }
+    if (window.cordova) {
+      document.addEventListener("menubutton", showActionSheet, false);
+    } else {
+      document.addEventListener("keypress", function(evt) {
+        if (evt.which == 109) { showActionSheet(); }
+      }, false);
+    }
 
     //nascondo la splash screen al termine del caricamento
     if (navigator.splashscreen) {
@@ -362,5 +428,5 @@ function($scope, $settings, $comicsData, $rmmTrack) {
   $scope.$on('$ionicView.beforeEnter', function(scopes, states) {
     $scope.uid = $comicsData.uid;
     $scope.debugMode = ($settings.userOptions.debugMode == 'T');
-  });  
+  });
 }]);

@@ -14,45 +14,51 @@
         font-size: 20px;
 font-style: normal;
 margin-left: 20px;
-}.flaticon-reserved:before {
+}.flaticon-orderAZ:before {
 	content: "\e000";
 }
-.flaticon-npurchased:before {
+.flaticon-reserved:before {
 	content: "\e001";
 }
-.flaticon-wishlist:before {
+.flaticon-npurchased:before {
 	content: "\e002";
 }
-.flaticon-purchased:before {
+.flaticon-wishlist:before {
 	content: "\e003";
 }
-.flaticon-group:before {
+.flaticon-purchased:before {
 	content: "\e004";
 }
-.flaticon-releases:before {
+.flaticon-group:before {
 	content: "\e005";
 }
-.flaticon-ordered-b:before {
+.flaticon-releases:before {
 	content: "\e006";
 }
-.flaticon-comics:before {
+.flaticon-ordered-b:before {
 	content: "\e007";
 }
-.flaticon-ordered:before {
+.flaticon-comics:before {
 	content: "\e008";
 }
-.flaticon-radio-unchecked:before {
+.flaticon-order19:before {
 	content: "\e009";
 }
-.flaticon-radio-checked:before {
+.flaticon-ordered:before {
 	content: "\e00a";
 }
-.flaticon-download:before {
+.flaticon-radio-unchecked:before {
 	content: "\e00b";
 }
-.flaticon-sort:before {
+.flaticon-radio-checked:before {
 	content: "\e00c";
 }
-.flaticon-upload:before {
+.flaticon-download:before {
 	content: "\e00d";
+}
+.flaticon-sort:before {
+	content: "\e00e";
+}
+.flaticon-upload:before {
+	content: "\e00f";
 }

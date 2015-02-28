@@ -1,9 +1,11 @@
 angular.module('starter.controllers')
 .controller('ComicsCtrl', [
 	'$scope', '$ionicModal', '$timeout', '$state', '$filter', '$undoPopup', '$utils', '$debounce', '$toast', '$ionicPopover',
-	'$ionicScrollDelegate', '$ionicNavBarDelegate', '$ionicPlatform', '$comicsData', '$settings', '$ionicHistory',
+	'$ionicScrollDelegate', '$ionicNavBarDelegate', '$ionicPlatform', '$comicsData', '$settings', '$ionicHistory', '$q',
+	'$ionicPopup', '$dialogs',
 function($scope, $ionicModal, $timeout, $state, $filter, $undoPopup, $utils, $debounce, $toast, $ionicPopover,
-	$ionicScrollDelegate, $ionicNavBarDelegate, $ionicPlatform, $comicsData, $settings, $ionicHistory) {
+	$ionicScrollDelegate, $ionicNavBarDelegate, $ionicPlatform, $comicsData, $settings, $ionicHistory, $q,
+	$ionicPopup, $dialogs) {
 	//recupero i dati già ordinati
 	var orderedComics = null;
 	//conterrà i dati filtrati (tramite campo di ricerca)
@@ -133,19 +135,102 @@ function($scope, $ionicModal, $timeout, $state, $filter, $undoPopup, $utils, $de
 			}, 250);
 		}
 	};
+
+	//creo il modal per l'editor
+	$scope.editorModal = null;
+	$scope.editorData = {};
+	$scope.editorEntry = null;
+	$scope.editorEntryMaster = null;
+	$scope.getEditorModal = function() {
+		var q = $q.defer();
+		if ($scope.editorModal == null) {
+			$ionicModal.fromTemplateUrl('templates/comicsEditorModal.html', {
+				scope: $scope,
+				// focusFirstInput: true,
+				animation: 'slide-in-up'
+			}).then(function(modal) {
+				$scope.editorModal = modal;
+				q.resolve($scope.editorModal);
+			});
+		} else {
+			q.resolve($scope.editorModal);
+		}
+		return q.promise;
+	};
+  $scope.editorUpdate = function(entry) {
+	  angular.copy(entry, $scope.editorEntryMaster);
+	  $comicsData.update($scope.editorEntryMaster);
+	  $comicsData.save();
+	  $scope.editorModal.hide();
+	  $scope.showNavBar();
+  };
+  $scope.editorCancel = function() {
+  	$scope.editorModal.hide();
+  	$scope.showNavBar();
+  }
+  $scope.editorIsUnique = function(entry) {
+    return entry != null && $comicsData.normalizeComicsName($scope.editorEntryMaster.name) == $comicsData.normalizeComicsName(entry.name) || 
+      $comicsData.isComicsUnique(entry);
+  };
+  $scope.chooseComicsPeriodicity = function(entry) {
+  	if (!window.cordova) {
+	    $scope.comicsPeriodicityPopup = $ionicPopup.show({
+	      templateUrl: 'comicsPeriodicity.html',
+	      title: $filter('translate')('Comics released every'),
+	      scope: $scope,
+	      buttons: [{
+	        text: $filter('translate')('Cancel'),
+	        type: 'button-default',
+	        onTap: function(e) { return false; }
+	      }]
+	    });
+		} else {
+			var config = {
+			    title: $filter('translate')('Comics released every'), 
+			    items: [
+			        { value: "", text: $filter('translate')('Not specified') },
+			        { value: "w1", text: $filter('translate')('Week') },
+			        { value: "M1", text: $filter('translate')('Month') },
+			        { value: "M2", text: $filter('translate')('2 month') },
+			        { value: "M3", text: $filter('translate')('3 month') },
+			        { value: "M4", text: $filter('translate')('4 month') },
+			        { value: "M6", text: $filter('translate')('6 month') },
+			        { value: "Y1", text: $filter('translate')('Year') }
+			    ],
+			    selectedValue: entry.periodicity,
+			    doneButtonLabel: $filter('translate')('Done'),
+			    cancelButtonLabel: $filter('translate')('Cancel')
+			};
+
+			$dialogs.showPicker(config).then(function(res) {
+				entry.periodicity = res;
+			});
+		}
+  };
+
 	//apre il template per l'editing
 	$scope.addComicsEntry = function() {
-		$state.go('app.comics_editor', {comicsId: 'new'});
+		//$state.go('app.comics_editor', {comicsId: 'new'});
+		$scope.getEditorModal().then(function() {
+			$scope.editorEntryMaster = $comicsData.getComicsById('new');
+			$scope.editorModal.scope.editorEntry = angular.copy($scope.editorEntryMaster);
+			$scope.editorModal.show();
+		});
 	};
 	//apre il template per l'editing del fumetto
 	$scope.editComicsEntry = function(item) {
-		item = item || $scope.selectedComics[0];
-		$state.go('app.comics_editor', {comicsId: item.id});
+		$scope.getEditorModal().then(function() {
+			item = item || $scope.selectedComics[0];
+			//$state.go('app.comics_editor', {comicsId: item.id});
+			$scope.editorEntryMaster = $comicsData.getComicsById(item.id);
+			$scope.editorModal.scope.editorEntry = angular.copy($scope.editorEntryMaster);
+			$scope.editorModal.show();
+		});
 	};
 	//apre te template per l'editing dell'uscita
 	$scope.showAddRelease = function(item) {
 		item = item || $scope.selectedComics[0];
-		$state.go('app.release_editor', {comicsId: item.id, releaseId: 'new'});
+		$state.go('app.comics_release_editor', {comicsId: item.id, releaseId: 'new'});
 	};
 	//
 	$scope.showNavBar = function() {
@@ -232,6 +317,14 @@ function($scope, $ionicModal, $timeout, $state, $filter, $undoPopup, $utils, $de
 		changeOrder();
 		applyFilter();
 	};
+	//
+	$scope.switchOrderby = function() {
+		if ($scope.orderBy == 'bestRelease') { $scope.orderBy = 'name'; }
+		else if ($scope.orderBy == 'name') { $scope.orderBy = 'bestRelease'; }
+		$scope.orderByDesc = false;
+		changeOrder();
+		applyFilter();
+	}
 	//NB meglio registrare il back button ogni volta che si entra nella modalità opzioni
 	//gestisco il back hw in base a quello che sto facendo
 	// $scope._deregisterBackButton = $ionicPlatform.registerBackButtonAction(function() {
@@ -295,7 +388,7 @@ function($scope, $ionicModal, $timeout, $state, $filter, $undoPopup, $utils, $de
     templateUrl: 'templates/bestRelease.html'
   };
 })
-.controller('ComicsEditorCtrl', [
+/*.controller('ComicsEditorCtrl', [
 '$scope', '$stateParams', '$ionicHistory', '$comicsData', '$ionicPopup', '$filter', '$dialogs',
 function($scope, $stateParams, $ionicHistory, $comicsData, $ionicPopup, $filter, $dialogs) {
 	//usato per contenere la form in modo da poter accedere alla form anche all'esterno del tag <form>
@@ -357,4 +450,4 @@ function($scope, $stateParams, $ionicHistory, $comicsData, $ionicPopup, $filter,
 		}
   };
   $scope.reset();
-}]);
+}])*/;

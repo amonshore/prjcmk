@@ -1,5 +1,5 @@
-<ion-view title="{{title | translate}}">
-
+<ion-view title="{{title | translate}}" hide-tabs="{{!!entry}}">
+ 
   <!-- pu\santi barra di navigazione -->
   <ion-nav-buttons side="secondary">
     <button class="button button-icon icon ion-plus-round" ng-if="entry" on-tap="showAddRelease(entry)"></button>
@@ -19,7 +19,7 @@
     </div>
   </ion-header-bar>
 
-  <ion-content class="has-header custom-header" has-bouncing="true">
+  <ion-content ng-class="{'has-header': !entry, 'custom-header-small': !!entry}" has-bouncing="true">
     <ion-list>
       <ion-item class="item item-release" ng-repeat="item in releases track by item._kk" id="{{item._kk}}">
         <!-- se non ha comicsId è l'intestazione del gruppo -->

@@ -3,7 +3,7 @@
   <!-- pulsanti barra di navigazione -->
   <ion-nav-buttons side="secondary">
     <button class="button button-icon icon ion-document" on-tap="addComicsEntry()"></button>
-    <button class="button button-icon icon ion-android-more" on-tap="openOrderByPopover($event)"></button>
+    <button class="button button-icon icon" ng-class="{'flaticon-order19': orderBy == 'name', 'flaticon-orderAZ': orderBy == 'bestRelease'}" on-tap="switchOrderby()"></button>
   </ion-nav-buttons>
 
   <!-- barra secondaria, visibile quando quella primaria è nascosta -->
@@ -11,7 +11,7 @@
     <button class="button button-icon icon ion-ios7-arrow-down hide-options" on-tap="showNavBar()"></button>
     <div class="info">{{selectedComics.length}}</div>
     <div class="buttons pull-right">
-      <button class="button button-icon icon ion-plus-round" ng-show="canEdit" on-tap="showAddRelease()"></button>
+      <!-- <button class="button button-icon icon ion-plus-round" ng-show="canEdit" on-tap="showAddRelease()"></button> -->
       <button class="button button-icon icon ion-compose" ng-show="canEdit" on-tap="editComicsEntry()"></button>
       <button class="button button-icon icon ion-android-trash" on-tap="removeComicsEntry()"></button>
     </div>
@@ -29,7 +29,7 @@
     </button>
   </header> -->
   <!-- content -->
-  <ion-content class="has-header custom-header" has-bouncing="true">
+  <ion-content class="has-header" has-bouncing="true">
     <!-- <ion-list can-swipe="true"> -->
     <ion-list>
         <ion-item bindonce class="item item-comics" 
