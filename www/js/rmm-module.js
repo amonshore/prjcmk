@@ -729,3 +729,161 @@ IonicModule
     }
   };
 }]);
+
+//
+IonicModule
+.factory('$rmmEditors', ['$rootScope', '$q', '$filter', '$ionicModal', '$ionicPopup', '$dialogs', '$comicsData', 
+function($rootScope, $q, $filter, $ionicModal, $ionicPopup, $dialogs, $comicsData) {
+  
+  var ReleaseEditor = function() {
+    this.modal = null;
+    this.scope = null;
+    this.init = function() {
+      var $this = this;
+      //creo un nuovo scope
+      this.scope = $rootScope.$new();
+      this.scope.editorEntry = null;
+      this.scope.editorReleaseMaster = null;
+      this.scope.editorRelease = null;
+      this.scope.onSave = null;
+      this.scope.onCancel = null;
+      this.scope.editorUpdate = function(release) {
+        angular.copy(release, $this.scope.editorReleaseMaster);
+        $comicsData.updateRelease($this.scope.editorEntry, $this.scope.editorReleaseMaster);
+        $comicsData.save();
+        $this.modal.hide();
+        ($this.scope.onSave || angular.noop)();
+      }
+      this.scope.editorCancel = function() {
+        $this.modal.hide();
+        ($this.scope.onCancel || angular.noop)();
+      }
+      this.scope.editorIsUnique = function(release) {
+        if (!release) return false;
+        return $this.scope.editorReleaseMaster.number == release.number || $comicsData.isReleaseUnique($this.scope.editorEntry, release);
+      }
+
+      return $ionicModal.fromTemplateUrl('templates/releaseEditorModal.html', { scope: $this.scope, animation: 'slide-in-up' });
+    };
+    this.show = function(entry, release, cbSave, cbCancel) {
+      this.scope.editorEntry = entry;
+      if (typeof release == 'string') {
+        if (release == 'new') {
+          this.scope.editorReleaseMaster = $comicsData.getReleaseById(entry, 'new');
+        } else if (release == 'next') {
+          this.scope.editorReleaseMaster = $comicsData.getReleaseById(entry, 'next');
+          this.scope.editorReleaseMaster.price = entry.price;
+        }
+      } else {
+        this.scope.editorReleaseMaster = release;
+      }
+      this.scope.editorRelease = angular.copy(this.scope.editorReleaseMaster);
+      this.scope.onSave = cbSave;
+      this.scope.onCancel = cbCancel;
+      this.modal.show();
+    };
+  }
+
+  var ComicsEditor = function() {
+    this.modal = null;
+    this.scope = null;
+    this.init = function() {
+      var $this = this;
+      var comicsPeriodicityPopup;
+      //creo un nuovo scope
+      this.scope = $rootScope.$new();
+      this.scope.editorEntry = null;
+      this.scope.editorEntryMaster = null;
+      this.scope.onSave = null;
+      this.scope.onCancel = null;
+      this.scope.editorUpdate = function(entry) {
+        angular.copy(entry, $this.scope.editorEntryMaster);
+        $comicsData.update($this.scope.editorEntryMaster);
+        $comicsData.save();
+        $this.modal.hide();
+        ($this.scope.onSave || angular.noop)();
+      }
+      this.scope.editorCancel = function() {
+        $this.modal.hide();
+        ($this.scope.onCancel || angular.noop)();
+      }
+      this.scope.editorIsUnique = function(entry) {
+        return entry != null && 
+          ($comicsData.normalizeComicsName($this.scope.editorEntryMaster.name) == $comicsData.normalizeComicsName(entry.name) || 
+            $comicsData.isComicsUnique(entry));
+      }
+      this.scope.chooseComicsPeriodicity = function(entry) {
+        if (!window.cordova) {
+          $this.scope.comicsPeriodicityPopup = $ionicPopup.show({
+            templateUrl: 'comicsPeriodicity.html',
+            title: $filter('translate')('Comics released every'),
+            scope: $this.scope,
+            buttons: [{
+              text: $filter('translate')('Cancel'),
+              type: 'button-default',
+              onTap: function(e) { return false; }
+            }]
+          });
+        } else {
+         var config = {
+             title: $filter('translate')('Comics released every'), 
+             items: [
+                 { value: "", text: $filter('translate')('Not specified') },
+                 { value: "w1", text: $filter('translate')('Week') },
+                 { value: "M1", text: $filter('translate')('Month') },
+                 { value: "M2", text: $filter('translate')('2 month') },
+                 { value: "M3", text: $filter('translate')('3 month') },
+                 { value: "M4", text: $filter('translate')('4 month') },
+                 { value: "M6", text: $filter('translate')('6 month') },
+                 { value: "Y1", text: $filter('translate')('Year') }
+             ],
+             selectedValue: entry.periodicity,
+             doneButtonLabel: $filter('translate')('Done'),
+             cancelButtonLabel: $filter('translate')('Cancel')
+         };
+
+         $dialogs.showPicker(config).then(function(res) {
+           entry.periodicity = res;
+         });
+        }
+      }
+
+      return $ionicModal.fromTemplateUrl('templates/comicsEditorModal.html', { scope: $this.scope, animation: 'slide-in-up' });
+    };
+    this.show = function(entry, cbSave, cbCancel) {
+      if (typeof entry == 'string') {
+        if (entry == 'new') {
+          this.scope.editorEntryMaster = $comicsData.getComicsById(entry, 'new');
+        }
+      } else {
+        this.scope.editorEntryMaster = entry;
+      }
+      this.scope.editorEntry = angular.copy(this.scope.editorEntryMaster);
+      this.scope.onSave = cbSave;
+      this.scope.onCancel = cbCancel;
+      this.modal.show();
+    };    
+  }
+
+  return {
+    createReleaseEditor: function() {
+      var q = $q.defer();
+      var re = new ReleaseEditor();
+      re.init().then(function(modal) {
+        re.modal = modal;
+        q.resolve(re);
+      });
+      return q.promise;
+    },
+    createComicsEditor: function() {
+      var q = $q.defer();
+      var re = new ComicsEditor();
+      re.init().then(function(modal) {
+        re.modal = modal;
+        q.resolve(re);
+      });
+      return q.promise;
+    }
+  }
+
+}]);

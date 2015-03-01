@@ -2,10 +2,10 @@ angular.module('starter.controllers')
 .controller('ComicsCtrl', [
 	'$scope', '$ionicModal', '$timeout', '$state', '$filter', '$undoPopup', '$utils', '$debounce', '$toast', '$ionicPopover',
 	'$ionicScrollDelegate', '$ionicNavBarDelegate', '$ionicPlatform', '$comicsData', '$settings', '$ionicHistory', '$q',
-	'$ionicPopup', '$dialogs',
+	'$rmmEditors',
 function($scope, $ionicModal, $timeout, $state, $filter, $undoPopup, $utils, $debounce, $toast, $ionicPopover,
 	$ionicScrollDelegate, $ionicNavBarDelegate, $ionicPlatform, $comicsData, $settings, $ionicHistory, $q,
-	$ionicPopup, $dialogs) {
+	$rmmEditors) {
 	//recupero i dati già ordinati
 	var orderedComics = null;
 	//conterrà i dati filtrati (tramite campo di ricerca)
@@ -136,101 +136,45 @@ function($scope, $ionicModal, $timeout, $state, $filter, $undoPopup, $utils, $de
 		}
 	};
 
-	//creo il modal per l'editor
-	$scope.editorModal = null;
-	$scope.editorData = {};
-	$scope.editorEntry = null;
-	$scope.editorEntryMaster = null;
-	$scope.getEditorModal = function() {
-		var q = $q.defer();
-		if ($scope.editorModal == null) {
-			$ionicModal.fromTemplateUrl('templates/comicsEditorModal.html', {
-				scope: $scope,
-				// focusFirstInput: true,
-				animation: 'slide-in-up'
-			}).then(function(modal) {
-				$scope.editorModal = modal;
-				q.resolve($scope.editorModal);
-			});
-		} else {
-			q.resolve($scope.editorModal);
-		}
-		return q.promise;
-	};
-  $scope.editorUpdate = function(entry) {
-	  angular.copy(entry, $scope.editorEntryMaster);
-	  $comicsData.update($scope.editorEntryMaster);
-	  $comicsData.save();
-	  $scope.editorModal.hide();
-	  $scope.showNavBar();
-  };
-  $scope.editorCancel = function() {
-  	$scope.editorModal.hide();
-  	$scope.showNavBar();
-  }
-  $scope.editorIsUnique = function(entry) {
-    return entry != null && $comicsData.normalizeComicsName($scope.editorEntryMaster.name) == $comicsData.normalizeComicsName(entry.name) || 
-      $comicsData.isComicsUnique(entry);
-  };
-  $scope.chooseComicsPeriodicity = function(entry) {
-  	if (!window.cordova) {
-	    $scope.comicsPeriodicityPopup = $ionicPopup.show({
-	      templateUrl: 'comicsPeriodicity.html',
-	      title: $filter('translate')('Comics released every'),
-	      scope: $scope,
-	      buttons: [{
-	        text: $filter('translate')('Cancel'),
-	        type: 'button-default',
-	        onTap: function(e) { return false; }
-	      }]
-	    });
-		} else {
-			var config = {
-			    title: $filter('translate')('Comics released every'), 
-			    items: [
-			        { value: "", text: $filter('translate')('Not specified') },
-			        { value: "w1", text: $filter('translate')('Week') },
-			        { value: "M1", text: $filter('translate')('Month') },
-			        { value: "M2", text: $filter('translate')('2 month') },
-			        { value: "M3", text: $filter('translate')('3 month') },
-			        { value: "M4", text: $filter('translate')('4 month') },
-			        { value: "M6", text: $filter('translate')('6 month') },
-			        { value: "Y1", text: $filter('translate')('Year') }
-			    ],
-			    selectedValue: entry.periodicity,
-			    doneButtonLabel: $filter('translate')('Done'),
-			    cancelButtonLabel: $filter('translate')('Cancel')
-			};
+	//creo l'editor
+	var comicsEditor = null;
+	$rmmEditors.createComicsEditor().then(function(editor) {
+		comicsEditor = editor;
+	});
 
-			$dialogs.showPicker(config).then(function(res) {
-				entry.periodicity = res;
-			});
-		}
-  };
+	var releaseEditor = null;
+	$rmmEditors.createReleaseEditor().then(function(editor) {
+		releaseEditor = editor;
+	});
 
 	//apre il template per l'editing
 	$scope.addComicsEntry = function() {
-		//$state.go('app.comics_editor', {comicsId: 'new'});
-		$scope.getEditorModal().then(function() {
-			$scope.editorEntryMaster = $comicsData.getComicsById('new');
-			$scope.editorModal.scope.editorEntry = angular.copy($scope.editorEntryMaster);
-			$scope.editorModal.show();
-		});
+		comicsEditor.show('new', 
+			angular.bind(this, function() {
+				$scope.showNavBar();
+				changeOrder();
+				applyFilter();
+			}), 
+			$scope.showNavBar);
 	};
 	//apre il template per l'editing del fumetto
 	$scope.editComicsEntry = function(item) {
-		$scope.getEditorModal().then(function() {
-			item = item || $scope.selectedComics[0];
-			//$state.go('app.comics_editor', {comicsId: item.id});
-			$scope.editorEntryMaster = $comicsData.getComicsById(item.id);
-			$scope.editorModal.scope.editorEntry = angular.copy($scope.editorEntryMaster);
-			$scope.editorModal.show();
-		});
+		comicsEditor.show(item || $scope.selectedComics[0], 
+			angular.bind(this, function() {
+				$scope.showNavBar();
+			}), 
+			$scope.showNavBar);
 	};
 	//apre te template per l'editing dell'uscita
 	$scope.showAddRelease = function(item) {
-		item = item || $scope.selectedComics[0];
-		$state.go('app.comics_release_editor', {comicsId: item.id, releaseId: 'new'});
+		releaseEditor.show(item || $scope.selectedComics[0], 
+			($settings.userOptions.autoFillReleaseData == 'T' ? 'next' : 'new'),
+			angular.bind(this, function() {
+			  $scope.showNavBar();
+			  changeOrder();
+			  applyFilter();
+			}),
+			$scope.showNavBar);
 	};
 	//
 	$scope.showNavBar = function() {

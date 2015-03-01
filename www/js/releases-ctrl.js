@@ -2,10 +2,10 @@ angular.module('starter.controllers')
 .controller('ReleasesEntryCtrl', [
 	'$scope', '$ionicModal', '$timeout', '$state', '$undoPopup', '$utils', '$toast', '$ionicPopover',
 	'$stateParams', '$debounce', '$ionicScrollDelegate', '$ionicNavBarDelegate', '$ionicPlatform', '$filter', 
-	'$comicsData', '$settings', '$dateParser', '$templateCache', '$ionicHistory', '$q',
+	'$comicsData', '$settings', '$dateParser', '$templateCache', '$ionicHistory', '$q', '$rmmEditors',
 function($scope, $ionicModal, $timeout, $state, $undoPopup, $utils, $toast, $ionicPopover, 
 	$stateParams, $debounce, $ionicScrollDelegate, $ionicNavBarDelegate, $ionicPlatform, $filter, 
-	$comicsData, $settings, $dateParser, $templateCache, $ionicHistory, $q) {
+	$comicsData, $settings, $dateParser, $templateCache, $ionicHistory, $q, $rmmEditors) {
 
   //
   var today = moment().format('YYYY-MM-DD');
@@ -211,68 +211,34 @@ function($scope, $ionicModal, $timeout, $state, $undoPopup, $utils, $toast, $ion
 		return $scope.releases && items && $scope.releases.length < items.length;
 	};
 
-	//creo il modal per l'editor
-	$scope.editorModal = null;
-	$scope.editorData = {};
-	$scope.editorEntry = null;
-	$scope.editorRelease = null;
-	$scope.editorReleaseMaster = null;
-	$scope.getEditorModal = function() {
-		var q = $q.defer();
-		if ($scope.editorModal == null) {
-			$ionicModal.fromTemplateUrl('templates/releaseEditorModal.html', {
-				scope: $scope,
-				// focusFirstInput: true,
-				animation: 'slide-in-up'
-			}).then(function(modal) {
-				$scope.editorModal = modal;
-				q.resolve($scope.editorModal);
-			});
-		} else {
-			q.resolve($scope.editorModal);
-		}
-		return q.promise;
-	};
-  $scope.editorUpdate = function(release) {
-	  angular.copy(release, $scope.editorReleaseMaster);
-	  $comicsData.updateRelease($scope.editorEntry, $scope.editorReleaseMaster);
-	  $comicsData.save();
-	  $scope.editorModal.hide();
-	  $scope.showNavBar();
-	  changeGroup();
-	  applyFilter();
-  };
-  $scope.editorCancel = function() {
-  	$scope.editorModal.hide();
-  	$scope.showNavBar();
-  }
-  $scope.editorIsUnique = function(release) {
-    return $scope.editorReleaseMaster.number == release.number || $comicsData.isReleaseUnique($scope.editorEntry, release);
-  };
+	//creo l'editor
+	var releaseEditor = null;
+	$rmmEditors.createReleaseEditor().then(function(editor) {
+		releaseEditor = editor;
+	});
 
   //apre te template per l'editing dell'uscita
   $scope.showAddRelease = function(item) {
-  	$scope.editorEntry = item || $comicsData.getComicsById($scope.selectedReleases[0].comicsId);
-		$scope.getEditorModal().then(function() {
-		  if ($settings.userOptions.autoFillReleaseData == 'T') {
-				$scope.editorReleaseMaster = $comicsData.getReleaseById($scope.editorEntry, 'next');
-	    	$scope.editorReleaseMaster.price = $scope.editorEntry.price;
-		  } else {
-				$scope.editorReleaseMaster = $comicsData.getReleaseById($scope.editorEntry, 'new');
-			}
-			$scope.editorModal.scope.editorRelease = angular.copy($scope.editorReleaseMaster);
-			$scope.editorModal.show();
-		});
+		releaseEditor.show(item || $comicsData.getComicsById($scope.selectedReleases[0].comicsId), 
+			($settings.userOptions.autoFillReleaseData == 'T' ? 'next' : 'new'),
+			angular.bind(this, function() {
+			  $scope.showNavBar();
+			  changeGroup();
+			  applyFilter();
+			}),
+			$scope.showNavBar);
   };
   //
   $scope.editReleaseEntry = function(release) {
   	release = release || $scope.selectedReleases[0];
-  	$scope.editorEntry = $comicsData.getComicsById(release.comicsId);
-		$scope.getEditorModal().then(function() {
-			$scope.editorReleaseMaster = release;
-			$scope.editorModal.scope.editorRelease = angular.copy($scope.editorReleaseMaster);
-			$scope.editorModal.show();
-		});
+		releaseEditor.show($comicsData.getComicsById(release.comicsId), 
+			release || $scope.selectedReleases[0],
+			angular.bind(this, function() {
+			  $scope.showNavBar();
+			  changeGroup();
+			  applyFilter();
+			}),
+			$scope.showNavBar);
   };
   //
   $scope.removeReleaseEntry = function(bAll) {
