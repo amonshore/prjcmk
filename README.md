@@ -22,3 +22,5 @@ plugins:
 
 Ver. 0.0.8
 - aggiunto supporto a Google Analytics
+
+Ver. 0.0.9

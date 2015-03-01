@@ -21,6 +21,7 @@
     "org.apache.cordova.file",
     "org.apache.cordova.dialogs",
     "am.armsoft.plugins.listpicker",
-    "https://github.com/danwilson/google-analytics-plugin.git"
+    "https://github.com/danwilson/google-analytics-plugin.git",
+    "org.apache.cordova.console"
   ]
 }
