@@ -104,6 +104,42 @@ function($scope, $q, $ionicPopup, $undoPopup, $toast, $ionicPopover, $ionicModal
     }
   };
   //
+  $scope.chooseReleaseGroupBy = function() {
+    if (!window.cordova) {
+      $scope.releaseGroupByPopup = $ionicPopup.show({
+        templateUrl: 'releaseGroupBy.html',
+        title: $filter('translate')('Group releases by'),
+        scope: $scope,
+        buttons: [{
+          text: $filter('translate')('Cancel'),
+          type: 'button-default',
+          onTap: function(e) { return false; }
+        }]
+      });
+      $scope.releaseGroupByPopup.then(function(res) {
+        if (res) {
+          $scope.optionsChanged();
+        }
+      });
+    } else {
+      var config = {
+        title: $filter('translate')('Group releases by'),
+        items: [
+          { value: "week", text: $filter('translate')('Week') },
+          { value: "month", text: $filter('translate')('Month') }
+        ],
+        selectedValue: $scope.userOptions.releaseGroupBy,
+          doneButtonLabel: $filter('translate')('Done'),
+          cancelButtonLabel: $filter('translate')('Cancel')
+      };
+
+      $dialogs.showPicker(config).then(function(res) {
+        $scope.userOptions.releaseGroupBy = res;
+        $scope.optionsChanged();
+      });      
+    }
+  };
+  //
   $scope.chooseDefaultUrl = function() {
     if (!window.cordova) {
       $scope.defaultUrlPopup = $ionicPopup.show({

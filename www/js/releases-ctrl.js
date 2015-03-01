@@ -154,7 +154,9 @@ function($scope, $ionicModal, $timeout, $state, $undoPopup, $utils, $toast, $ion
 	//
 	var lastReadTime = null;
 	var needReload = function() {
-		return items == undefined || ($comicsData.lastSaveTime != null && $comicsData.lastSaveTime > lastReadTime) || 
+		return items == undefined ||
+			($scope.groupBy != $settings.userOptions.releaseGroupBy) ||
+			($comicsData.lastSaveTime != null && $comicsData.lastSaveTime > lastReadTime) || 
 			(!moment().isSame(moment(lastReadTime), 'days'));
 	};
 	//TODO da perfezionare, lo scroll deve avvenire dopo il caricamento dei (primi) dati altrimenti lo scroll non funziona
@@ -170,7 +172,8 @@ function($scope, $ionicModal, $timeout, $state, $undoPopup, $utils, $toast, $ion
 	//se true mostro solo wishlist (senza data) e scadute, e non acquistate
 	$scope.isWishlist = $state.is('app.wishlist');
 	//
-	$scope.canGroup = !$scope.isWishlist && !$scope.entry;
+	//$scope.canGroup = !$scope.isWishlist && !$scope.entry; <- spostato nelle maschera della opzioni
+	$scope.canGroup = false;
 	//
 	$scope.isPurchased = $state.is('app.purchased');
 	//
@@ -443,6 +446,7 @@ function($scope, $ionicModal, $timeout, $state, $undoPopup, $utils, $toast, $ion
 		//se sono stati modificati i dati devo aggiornare la vista
 		//console.log('releases beforeEnter', lastReadTime, needReload());
 		if (needReload()) {
+			$scope.groupBy = $settings.userOptions.releaseGroupBy || 'week';
 		  changeGroup();
 		  applyFilter();
 	  }

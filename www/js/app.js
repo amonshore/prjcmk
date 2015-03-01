@@ -136,7 +136,8 @@ function($stateProvider, $urlRouterProvider, $initOptionsProvider, $translatePro
     "Send comment": "Invia commenti",
     "Comment about Comikku": "Commenti su Comikku",
     "Version": "Versione",
-    "Done": "Fatto"
+    "Done": "Fatto",
+    "Group releases by": "Raggruppa uscite per"
   });
 
   //imposto la lingua di default
@@ -362,6 +363,7 @@ function($ionicPlatform, $translate, $state, $ionicHistory, $settings, $rootScop
         fnActionSheetHide();
       } else {
         fnActionSheetHide = $ionicActionSheet.show({
+          cssClass: 'android',
           buttons: [
               { text: $filter('translate')('Settings') },
               { text: $filter('translate')('Data') },

@@ -2,7 +2,7 @@
 
   <!-- pulsanti barra di navigazione -->
   <ion-nav-buttons side="secondary">
-    <button class="button button-icon icon ion-document" on-tap="addComicsEntry()"></button>
+    <!-- <button class="button button-icon icon ion-document" on-tap="addComicsEntry()"></button> -->
     <button class="button button-icon icon" ng-class="{'flaticon-order19': orderBy == 'name', 'flaticon-orderAZ': orderBy == 'bestRelease'}" on-tap="switchOrderby()"></button>
   </ion-nav-buttons>
 
@@ -55,6 +55,7 @@
         distance="1%">
       </ion-infinite-scroll>
   </ion-content>
+  <button class="button addcircle" ng-hide="currentBar=='options'" on-tap="addComicsEntry()">&plus;</button>
 </ion-view>
 
 <script id="orderby-popover.html" type="text/ng-template">

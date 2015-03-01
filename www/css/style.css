@@ -141,6 +141,11 @@
 	color: #ffc900;
 }
 
+.tabs-icon-only > .tabs .icon, 
+.tabs-icon-only.tabs .icon {
+	font-size: 26px;
+}
+
 /*.bar.bar-header img.logo {
 	vertical-align: middle;
 	margin-right: 7px;
@@ -691,4 +696,38 @@ ion-side-menu.menu,
 .about-list .item {
 	text-align: center;
 	border-width: 0;
+}
+
+/** material button **/
+
+button.button.addcircle {
+	position: fixed;
+	bottom: 24px;
+	right: 19px;
+	width: 55px;
+	height: 55px;
+	background-color: #FFC900;
+	z-index: 99999;
+	border-radius: 50px;
+	color: #fff;
+	line-height: 53px;
+	text-align: center;
+	font-size: 35px;
+	box-shadow: 2px 5px 18px -2px #333;
+	border-style: none;
+}
+button.button.addcircle.activated {
+	background-color: #E5B913;
+}
+
+/** action sheet **/
+.action-sheet-backdrop.android .action-sheet-wrapper .action-sheet .action-sheet-group {
+	margin-bottom: 0;
+	border-radius: 0;
+	background-color: #EFEFEF;
+}
+.action-sheet-backdrop.android .action-sheet-wrapper .action-sheet .action-sheet-group .button {
+	color: #333;
+	text-align: left;
+	padding-left: 14px;
 }

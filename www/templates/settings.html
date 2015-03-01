@@ -11,6 +11,7 @@
 				<p class="option-value" ng-show="userOptions.weekStartMonday == 'T'" translate>Monday</p>
 				<p class="option-value" ng-show="userOptions.weekStartMonday != 'T'" translate>Sunday</p>
 			</ion-item>
+			<!--
 			<ion-item class="item-big" on-tap="chooseDefaultUrl()">
 				<span translate>On start show</span>
 				<p class="option-value" ng-show="userOptions.defaultUrl == '/app/comics'" translate>Comics</p>
@@ -18,7 +19,13 @@
 				<p class="option-value" ng-show="userOptions.defaultUrl == '/app/wishlist'" translate>Lost &amp; Wishlist</p>
 				<p class="option-value" ng-show="userOptions.defaultUrl == '/app/purchased'" translate>Purchased</p>
 			</ion-item>
+			-->
 			<!-- <ion-item class="item-big" on-tap="resetOptions()"><i class="icon ion-refresh"></i> <span translate>Reset settings</span></ion-item> -->
+			<ion-item class="item-big" on-tap="chooseReleaseGroupBy()">
+				<span translate>Group releases by</span>
+				<p class="option-value" ng-show="userOptions.releaseGroupBy == 'week'" translate>Week</p>
+				<p class="option-value" ng-show="userOptions.releaseGroupBy == 'month'" translate>Month</p>
+			</ion-item>
 		</ion-list>
   </ion-content>
 </ion-view>
@@ -43,5 +50,12 @@
 		<ion-radio ng-model="userOptions.defaultUrl" ng-value="'/app/releases'" ng-change="defaultUrlPopup.close('/app/releases')" icon="flaticon-radio-checked"><span translate>Releases</span></ion-radio>
 		<ion-radio ng-model="userOptions.defaultUrl" ng-value="'/app/wishlist'" ng-change="defaultUrlPopup.close('/app/wishlist')" icon="flaticon-radio-checked"><span translate>Lost &amp; Wishlist</span></ion-radio>
 		<ion-radio ng-model="userOptions.defaultUrl" ng-value="'/app/purchased'" ng-change="defaultUrlPopup.close('/app/purchased')" icon="flaticon-radio-checked"><span translate>Purchased</span></ion-radio>
+	</ion-list>
+</script>
+
+<script id="releaseGroupBy.html" type="text/ng-template">
+	<ion-list>
+		<ion-radio ng-model="userOptions.releaseGroupBy" ng-value="'week'" ng-change="releaseGroupByPopup.close('week')" icon="flaticon-radio-checked"><span translate>Week</span></ion-radio>
+		<ion-radio ng-model="userOptions.releaseGroupBy" ng-value="'month'" ng-change="releaseGroupByPopup.close('month')" icon="flaticon-radio-checked"><span translate>Month</span></ion-radio>
 	</ion-list>
 </script>
