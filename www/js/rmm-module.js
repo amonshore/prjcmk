@@ -763,7 +763,8 @@ function($rootScope, $q, $filter, $ionicModal, $ionicPopup, $dialogs, $comicsDat
         return $this.scope.editorReleaseMaster.number == release.number || $comicsData.isReleaseUnique($this.scope.editorEntry, release);
       }
 
-      return $ionicModal.fromTemplateUrl('templates/releaseEditorModal.html', { scope: $this.scope, animation: 'slide-in-up' });
+      return $ionicModal.fromTemplateUrl('templates/releaseEditorModal.html', 
+        { scope: $this.scope, focusFirstInput: true, animation: 'slide-in-up' });
     };
     this.show = function(entry, release, cbSave, cbCancel) {
       this.scope.editorEntry = entry;
@@ -848,7 +849,8 @@ function($rootScope, $q, $filter, $ionicModal, $ionicPopup, $dialogs, $comicsDat
         }
       }
 
-      return $ionicModal.fromTemplateUrl('templates/comicsEditorModal.html', { scope: $this.scope, animation: 'slide-in-up' });
+      return $ionicModal.fromTemplateUrl('templates/comicsEditorModal.html', 
+        { scope: $this.scope, focusFirstInput: true, animation: 'slide-in-up' });
     };
     this.show = function(entry, cbSave, cbCancel) {
       if (typeof entry == 'string') {

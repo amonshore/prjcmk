@@ -102,6 +102,9 @@
 .bar.bar-header.bar-options .button:before {
 	font-size: 28px;
 }
+.bar.bar-header.bar-options .button.icon.flaticon-copy:before {
+	font-size: 24px;
+}
 .bar.bar-header.bar-options .info {
 	color: #666666;
 	line-height: 32px;

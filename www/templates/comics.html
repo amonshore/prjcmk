@@ -12,6 +12,7 @@
     <div class="info">{{selectedComics.length}}</div>
     <div class="buttons pull-right">
       <button class="button button-icon icon ion-plus-round" ng-show="canEdit" on-tap="showAddRelease()"></button>
+      <button class="button button-icon icon flaticon-copy" ng-show="canEdit" on-tap="cloneComicsEntry()"></button>
       <button class="button button-icon icon ion-compose" ng-show="canEdit" on-tap="editComicsEntry()"></button>
       <button class="button button-icon icon ion-android-trash" on-tap="removeComicsEntry()"></button>
     </div>
@@ -39,7 +40,7 @@
           ng-repeat="item in comics track by item.id"> 
 
         <div>
-          <span class="comics-title"><i class="flaticon-reserved" bo-if="item.reserved=='T'"></i> {{item.name}}</span>
+          <span class="comics-title"><i class="flaticon-reserved" ng-if="item.reserved=='T'"></i> {{item.name}}</span>
           <span class="comics-subtitle">{{item.publisher}}</span>
           <span class="comics-notes">{{getComicsInfo(item)}}</span>
           <!-- <span class="comics-notes" bo-if="debugMode">last upd {{item.lastUpdate}} best {{item.bestRelease.date}} id {{item.id}}</span> -->

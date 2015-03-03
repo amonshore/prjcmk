@@ -135,6 +135,18 @@ function ($q, $filter, $utils, $file) {
 			}
 		},
 		//
+		cloneComics: function(item) {
+			var clone = this.getComicsById('new');
+			clone.series = item.series;
+			clone.publisher = item.publisher;
+			clone.authors = item.authors;
+			clone.price = item.price;
+			clone.periodicity = item.periodicity;
+			clone.reserved = item.reserved;
+			clone.notes = item.notes;
+			return clone;
+		},
+		//
 		isComicsUnique: function(item) {
 			var name = this.normalizeComicsName(item.name);
 			return _.find(this.comics, function(cc) { return this.normalizeComicsName(cc.name) == name; }, this) == undefined;

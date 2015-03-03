@@ -38,27 +38,30 @@ margin-left: 20px;
 .flaticon-ordered-b:before {
 	content: "\e007";
 }
-.flaticon-comics:before {
+.flaticon-copy:before {
 	content: "\e008";
 }
-.flaticon-order19:before {
+.flaticon-comics:before {
 	content: "\e009";
 }
-.flaticon-ordered:before {
+.flaticon-order19:before {
 	content: "\e00a";
 }
-.flaticon-radio-unchecked:before {
+.flaticon-ordered:before {
 	content: "\e00b";
 }
-.flaticon-radio-checked:before {
+.flaticon-radio-unchecked:before {
 	content: "\e00c";
 }
-.flaticon-download:before {
+.flaticon-radio-checked:before {
 	content: "\e00d";
 }
-.flaticon-sort:before {
+.flaticon-download:before {
 	content: "\e00e";
 }
-.flaticon-upload:before {
+.flaticon-sort:before {
 	content: "\e00f";
+}
+.flaticon-upload:before {
+	content: "\e010";
 }

@@ -157,6 +157,17 @@ function($scope, $ionicModal, $timeout, $state, $filter, $undoPopup, $utils, $de
 			}), 
 			$scope.showNavBar);
 	};
+	//apre il template per l'editing
+	$scope.cloneComicsEntry = function(item) {
+		item = $comicsData.cloneComics(item || $scope.selectedComics[0]);
+		comicsEditor.show(item, 
+			angular.bind(this, function() {
+				$scope.showNavBar();
+				changeOrder();
+				applyFilter();
+			}), 
+			$scope.showNavBar);
+	};
 	//apre il template per l'editing del fumetto
 	$scope.editComicsEntry = function(item) {
 		comicsEditor.show(item || $scope.selectedComics[0], 
