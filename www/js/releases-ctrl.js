@@ -326,6 +326,9 @@ function($scope, $ionicModal, $timeout, $state, $undoPopup, $utils, $toast, $ion
   	return $comicsData.getComicsById(comicsId);
   };
 	//
+	$scope.hasNavBar = function() {
+		return ($scope.currentBar == 'title');
+	};
 	$scope.showNavBar = function() {
 		$scope.selectedReleases = [];
 		$scope.currentBar = 'title'
@@ -445,16 +448,20 @@ function($scope, $ionicModal, $timeout, $state, $undoPopup, $utils, $toast, $ion
 	$scope.$on('$ionicView.beforeEnter', function(scopes, states) {
 		//se sono stati modificati i dati devo aggiornare la vista
 		//console.log('releases beforeEnter', lastReadTime, needReload());
-		if (needReload()) {
-			$scope.groupBy = $settings.userOptions.releaseGroupBy || 'week';
-		  changeGroup();
-		  applyFilter();
-	  }
+		$timeout(function() {
+			if (needReload()) {
+				$scope.groupBy = $settings.userOptions.releaseGroupBy || 'week';
+			  changeGroup();
+			  applyFilter();
+		  }
+		}, 1);
 	});
 	$scope.$on('$ionicView.afterEnter', function(scopes, states) {
 		//in ogni caso gestire gli elementi selezionati in precedenza
 		//	(attualmente l'effeto è che l'elemento è selezionato ma l'header è nello stato 'title')
-		$scope.showNavBar();
+		if (!$scope.hasNavBar()) {
+			$scope.showNavBar();			
+		}
 	});
 	$scope.$on('$ionicView.beforeLeave', function(scopes, states) {
 		$scope._deregisterBackButton && $scope._deregisterBackButton();

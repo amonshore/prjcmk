@@ -738,29 +738,30 @@ function($rootScope, $q, $filter, $ionicModal, $ionicPopup, $dialogs, $comicsDat
   var ReleaseEditor = function() {
     this.modal = null;
     this.scope = null;
+    this.editorReleaseMaster = null;
+    this.onSave = null;
+    this.onCancel = null;
+    //
     this.init = function() {
       var $this = this;
       //creo un nuovo scope
       this.scope = $rootScope.$new();
       this.scope.editorEntry = null;
-      this.scope.editorReleaseMaster = null;
       this.scope.editorRelease = null;
-      this.scope.onSave = null;
-      this.scope.onCancel = null;
       this.scope.editorUpdate = function(release) {
-        angular.copy(release, $this.scope.editorReleaseMaster);
-        $comicsData.updateRelease($this.scope.editorEntry, $this.scope.editorReleaseMaster);
+        angular.copy(release, $this.editorReleaseMaster);
+        $comicsData.updateRelease($this.scope.editorEntry, $this.editorReleaseMaster);
         $comicsData.save();
         $this.modal.hide();
-        ($this.scope.onSave || angular.noop)();
+        ($this.onSave || angular.noop)();
       }
       this.scope.editorCancel = function() {
         $this.modal.hide();
-        ($this.scope.onCancel || angular.noop)();
+        ($this.onCancel || angular.noop)();
       }
       this.scope.editorIsUnique = function(release) {
         if (!release) return false;
-        return $this.scope.editorReleaseMaster.number == release.number || $comicsData.isReleaseUnique($this.scope.editorEntry, release);
+        return $this.editorReleaseMaster.number == release.number || $comicsData.isReleaseUnique($this.scope.editorEntry, release);
       }
 
       return $ionicModal.fromTemplateUrl('templates/releaseEditorModal.html', 
@@ -770,47 +771,48 @@ function($rootScope, $q, $filter, $ionicModal, $ionicPopup, $dialogs, $comicsDat
       this.scope.editorEntry = entry;
       if (typeof release == 'string') {
         if (release == 'new') {
-          this.scope.editorReleaseMaster = $comicsData.getReleaseById(entry, 'new');
+          this.editorReleaseMaster = $comicsData.getReleaseById(entry, 'new');
         } else if (release == 'next') {
-          this.scope.editorReleaseMaster = $comicsData.getReleaseById(entry, 'next');
-          this.scope.editorReleaseMaster.price = entry.price;
+          this.editorReleaseMaster = $comicsData.getReleaseById(entry, 'next');
+          this.editorReleaseMaster.price = entry.price;
         }
       } else {
-        this.scope.editorReleaseMaster = release;
+        this.editorReleaseMaster = release;
       }
-      this.scope.editorRelease = angular.copy(this.scope.editorReleaseMaster);
-      this.scope.onSave = cbSave;
-      this.scope.onCancel = cbCancel;
-      this.modal.show();
+      this.onSave = cbSave;
+      this.onCancel = cbCancel;
+      this.scope.editorRelease = angular.copy(this.editorReleaseMaster);
+      return this.modal.show();
     };
   }
 
   var ComicsEditor = function() {
     this.modal = null;
     this.scope = null;
+    this.editorEntryMaster = null;
+    this.onSave = null;
+    this.onCancel = null;
+    //
     this.init = function() {
       var $this = this;
       var comicsPeriodicityPopup;
       //creo un nuovo scope
       this.scope = $rootScope.$new();
       this.scope.editorEntry = null;
-      this.scope.editorEntryMaster = null;
-      this.scope.onSave = null;
-      this.scope.onCancel = null;
       this.scope.editorUpdate = function(entry) {
-        angular.copy(entry, $this.scope.editorEntryMaster);
-        $comicsData.update($this.scope.editorEntryMaster);
+        angular.copy(entry, $this.editorEntryMaster);
+        $comicsData.update($this.editorEntryMaster);
         $comicsData.save();
         $this.modal.hide();
-        ($this.scope.onSave || angular.noop)();
+        ($this.onSave || angular.noop)();
       }
       this.scope.editorCancel = function() {
         $this.modal.hide();
-        ($this.scope.onCancel || angular.noop)();
+        ($this.onCancel || angular.noop)();
       }
       this.scope.editorIsUnique = function(entry) {
         return entry != null && 
-          ($comicsData.normalizeComicsName($this.scope.editorEntryMaster.name) == $comicsData.normalizeComicsName(entry.name) || 
+          ($comicsData.normalizeComicsName($this.editorEntryMaster.name) == $comicsData.normalizeComicsName(entry.name) || 
             $comicsData.isComicsUnique(entry));
       }
       this.scope.chooseComicsPeriodicity = function(entry) {
@@ -855,15 +857,15 @@ function($rootScope, $q, $filter, $ionicModal, $ionicPopup, $dialogs, $comicsDat
     this.show = function(entry, cbSave, cbCancel) {
       if (typeof entry == 'string') {
         if (entry == 'new') {
-          this.scope.editorEntryMaster = $comicsData.getComicsById(entry, 'new');
+          this.editorEntryMaster = $comicsData.getComicsById(entry, 'new');
         }
       } else {
-        this.scope.editorEntryMaster = entry;
+        this.editorEntryMaster = entry;
       }
-      this.scope.editorEntry = angular.copy(this.scope.editorEntryMaster);
-      this.scope.onSave = cbSave;
-      this.scope.onCancel = cbCancel;
-      this.modal.show();
+      this.onSave = cbSave;
+      this.onCancel = cbCancel;
+      this.scope.editorEntry = angular.copy(this.editorEntryMaster);
+      return this.modal.show();
     };    
   }
 
