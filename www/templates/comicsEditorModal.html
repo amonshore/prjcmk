@@ -4,7 +4,7 @@
   <ion-header-bar class="bar-energized">
   	<h1 class="title">{{editorEntry.id == 'new' ? 'New comics entry': 'Edit comics entry' | translate}}</h1>
     <button class="button button-icon icon ion-android-close" on-tap="editorCancel()"></button>
-    <button class="button button-icon icon ion-android-checkmark" on-tap="editorUpdate(editorEntry)" ng-disabled="editorData.form.$invalid || !editorIsUnique(editorEntry)"></button>
+    <button class="button button-icon icon ion-android-checkmark" on-tap="editorUpdate(editorEntry)" ng-disabled="editorData.form.$invalid || formDisabled"></button>
   </ion-header-bar>
 
   <!-- content -->
@@ -12,7 +12,7 @@
     <form name="editorData.form" novalidate class="validation-form">
 		  <label class="item item-input item-key">
 		  	<span class="input-label rmm-required" translate> Name</span>
-		    <input type="text" ng-model="editorEntry.name" required>
+		    <input type="text" ng-model="editorEntry.name" ng-change="checkUnique(editorEntry)" required>
 		  </label>
 		  <label class="item item-input">
 		    <span class="input-label" translate> Publisher</span>

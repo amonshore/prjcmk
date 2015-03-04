@@ -4,7 +4,7 @@
   <ion-header-bar class="bar-energized">
   	<h1 class="title">{{editorEntry.name}}</h1>
     <button class="button button-icon icon ion-android-close" on-tap="editorCancel()"></button>
-    <button class="button button-icon icon ion-android-checkmark" on-tap="editorUpdate(editorRelease)" ng-disabled="editorData.form.$invalid || !editorIsUnique(editorRelease)"></button>
+    <button class="button button-icon icon ion-android-checkmark" on-tap="editorUpdate(editorRelease)" ng-disabled="editorData.form.$invalid || formDisabled"></button>
   </ion-header-bar>
 
   <!-- content -->
@@ -12,7 +12,7 @@
     <form name="data.form" novalidate class="validation-form">
 		  <label class="item item-input item-key">
 		    <span class="input-label rmm-required" translate> Issue #</span>
-		    <input type="number" placeholder="{{'release number' | translate}}" ng-model="editorRelease.number" name="nNumber" min="1" required>
+		    <input type="number" placeholder="{{'release number' | translate}}" ng-model="editorRelease.number" name="nNumber" min="1" ng-change="checkUnique(editorRelease)" required>
 		  </label>
 		  <label class="item item-input">
 		    <span class="input-label" translate> Date</span>

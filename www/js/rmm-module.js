@@ -748,6 +748,7 @@ function($rootScope, $q, $filter, $ionicModal, $ionicPopup, $dialogs, $comicsDat
       this.scope = $rootScope.$new();
       this.scope.editorEntry = null;
       this.scope.editorRelease = null;
+      this.scope.editorData = {};
       this.scope.editorUpdate = function(release) {
         angular.copy(release, $this.editorReleaseMaster);
         $comicsData.updateRelease($this.scope.editorEntry, $this.editorReleaseMaster);
@@ -759,10 +760,16 @@ function($rootScope, $q, $filter, $ionicModal, $ionicPopup, $dialogs, $comicsDat
         $this.modal.hide();
         ($this.onCancel || angular.noop)();
       }
-      this.scope.editorIsUnique = function(release) {
+      this.scope.formDisabled = true;
+      this.scope.checkUnique = function(release) {
+        $this.scope.formDisabled = !(!isNaN(release.number) && ($this.editorReleaseMaster.number == release.number || 
+                  $comicsData.isReleaseUnique($this.scope.editorEntry, release)));
+        //console.log("check " + release.number + " " + $this.scope.formDisabled)
+      }
+/*      this.scope.editorIsUnique = function(release) {
         if (!release) return false;
         return $this.editorReleaseMaster.number == release.number || $comicsData.isReleaseUnique($this.scope.editorEntry, release);
-      }
+      }*/
 
       return $ionicModal.fromTemplateUrl('templates/releaseEditorModal.html', 
         { scope: $this.scope, focusFirstInput: true, animation: 'slide-in-up' });
@@ -782,6 +789,7 @@ function($rootScope, $q, $filter, $ionicModal, $ionicPopup, $dialogs, $comicsDat
       this.onSave = cbSave;
       this.onCancel = cbCancel;
       this.scope.editorRelease = angular.copy(this.editorReleaseMaster);
+      this.scope.checkUnique(this.scope.editorRelease);
       return this.modal.show();
     };
   }
@@ -799,6 +807,7 @@ function($rootScope, $q, $filter, $ionicModal, $ionicPopup, $dialogs, $comicsDat
       //creo un nuovo scope
       this.scope = $rootScope.$new();
       this.scope.editorEntry = null;
+      this.scope.editorData = {};
       this.scope.editorUpdate = function(entry) {
         angular.copy(entry, $this.editorEntryMaster);
         $comicsData.update($this.editorEntryMaster);
@@ -810,11 +819,18 @@ function($rootScope, $q, $filter, $ionicModal, $ionicPopup, $dialogs, $comicsDat
         $this.modal.hide();
         ($this.onCancel || angular.noop)();
       }
-      this.scope.editorIsUnique = function(entry) {
-        return entry != null && 
-          ($comicsData.normalizeComicsName($this.editorEntryMaster.name) == $comicsData.normalizeComicsName(entry.name) || 
-            $comicsData.isComicsUnique(entry));
+      this.scope.formDisabled = true;
+      this.scope.checkUnique = function(entry) {
+        $this.scope.formDisabled = !(entry != null &&  
+                  ($comicsData.normalizeComicsName($this.editorEntryMaster.name) == $comicsData.normalizeComicsName(entry.name) || 
+                    $comicsData.isComicsUnique(entry)));
+        //console.log("check " + entry.name + " " + $this.scope.formDisabled)
       }
+      // this.scope.editorIsUnique = function(entry) {
+      //   return entry != null && 
+      //     ($comicsData.normalizeComicsName($this.editorEntryMaster.name) == $comicsData.normalizeComicsName(entry.name) || 
+      //       $comicsData.isComicsUnique(entry));
+      // }
       this.scope.chooseComicsPeriodicity = function(entry) {
         if (!window.cordova) {
           $this.scope.comicsPeriodicityPopup = $ionicPopup.show({
@@ -865,6 +881,7 @@ function($rootScope, $q, $filter, $ionicModal, $ionicPopup, $dialogs, $comicsDat
       this.onSave = cbSave;
       this.onCancel = cbCancel;
       this.scope.editorEntry = angular.copy(this.editorEntryMaster);
+      this.scope.checkUnique(this.scope.editorEntry);
       return this.modal.show();
     };    
   }
