@@ -258,7 +258,7 @@ function($scope, $ionicModal, $timeout, $state, $undoPopup, $utils, $toast, $ion
 
 			$timeout(function() {
 			  $undoPopup.show({title: $filter('translate')('Releases removed'),
-			  								text: '<i class="icon ion-android-system-back"></i> ' + $filter('translate')('CANCEL'),  
+			  								text: $filter('translate')('CANCEL'),  
 			  								timeout: "long"}).then(function(res) {
 			    if (res == 'ok') {
 			    	if (bAll) {

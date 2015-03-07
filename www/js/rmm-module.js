@@ -762,7 +762,7 @@ function($rootScope, $q, $filter, $ionicModal, $ionicPopup, $dialogs, $comicsDat
       }
       this.scope.formDisabled = true;
       this.scope.checkUnique = function(release) {
-        $this.scope.formDisabled = !(!isNaN(release.number) && ($this.editorReleaseMaster.number == release.number || 
+        $this.scope.formDisabled = !(/^\d+$/.test(release.number) && ($this.editorReleaseMaster.number == release.number || 
                   $comicsData.isReleaseUnique($this.scope.editorEntry, release)));
         //console.log("check " + release.number + " " + $this.scope.formDisabled)
       }
@@ -772,7 +772,7 @@ function($rootScope, $q, $filter, $ionicModal, $ionicPopup, $dialogs, $comicsDat
       }*/
 
       return $ionicModal.fromTemplateUrl('templates/releaseEditorModal.html', 
-        { scope: $this.scope, focusFirstInput: true, animation: 'slide-in-up' });
+        { scope: $this.scope, focusFirstInput: false, animation: 'slide-in-up' });
     };
     this.show = function(entry, release, cbSave, cbCancel) {
       this.scope.editorEntry = entry;
@@ -868,7 +868,7 @@ function($rootScope, $q, $filter, $ionicModal, $ionicPopup, $dialogs, $comicsDat
       }
 
       return $ionicModal.fromTemplateUrl('templates/comicsEditorModal.html', 
-        { scope: $this.scope, focusFirstInput: true, animation: 'slide-in-up' });
+        { scope: $this.scope, focusFirstInput: false, animation: 'slide-in-up' });
     };
     this.show = function(entry, cbSave, cbCancel) {
       if (typeof entry == 'string') {

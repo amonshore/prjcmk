@@ -9,7 +9,7 @@
 
   <!-- content -->
   <ion-content class="has-header">
-    <form name="editorData.form" novalidate class="validation-form">
+    <form name="editorData.form" novalidate class="validation-form" ng-submit="editorUpdate(editorEntry)">
 		  <label class="item item-input item-key">
 		  	<span class="input-label rmm-required" translate> Name</span>
 		    <input type="text" ng-model="editorEntry.name" ng-change="checkUnique(editorEntry)" required>
@@ -59,6 +59,7 @@
 				<p ng-show="editorEntry.periodicity == 'M6'" translate>6 months</p>
 				<p ng-show="editorEntry.periodicity == 'Y1'" translate>Year</p>
 			</ion-item>
+			<input type="submit" style="visibility:hidden" ng-disabled="editorData.form.$invalid || formDisabled">
     </form>
   </ion-content>
 </ion-modal-view>

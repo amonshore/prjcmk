@@ -264,6 +264,7 @@ function ($q, $filter, $utils, $file) {
 		update: function(item) {
 			if (item.id == "new") {
 				item.id = UUID.genV1().toString();
+				item.name = _.str.clean(item.name); //tolgo gli spazi
 				this.comics.push(item);
 			}
 			//aggiorno ultima modifica

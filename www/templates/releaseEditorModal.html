@@ -9,15 +9,15 @@
 
   <!-- content -->
   <ion-content class="has-header">
-    <form name="data.form" novalidate class="validation-form">
+    <form name="editorData.form" novalidate class="validation-form" ng-submit="editorUpdate(editorRelease)">
 		  <label class="item item-input item-key">
 		    <span class="input-label rmm-required" translate> Issue #</span>
-		    <input type="number" placeholder="{{'release number' | translate}}" ng-model="editorRelease.number" name="nNumber" min="1" ng-change="checkUnique(editorRelease)" required>
+		    <!-- BUG con type="number" non scatena il submit della form su android alla pressione del "tasto" invio -->
+		    <input type="text" placeholder="{{'release number' | translate}}" ng-model="editorRelease.number" ng-change="checkUnique(editorRelease)" required>
 		  </label>
 		  <label class="item item-input">
 		    <span class="input-label" translate> Date</span>
-		    <input type="date" name="rdate" ng-model="editorRelease.date" ng-required="editorRelease.reminder=='1'" rmm-input-date>
-		    <span class="rmm-required-message" ng-show="form.rdate.$error.required" translate>Release date is required with reminder checked!</span>
+		    <input type="date" ng-model="editorRelease.date" rmm-input-date>
 		  </label>
 		  <label class="item item-input">
 		    <span class="input-label" translate> Price</span>
@@ -63,6 +63,7 @@
 		  <!-- <div class="content padding">
 				<button class="button button-block button-positive" ng-click="update(release)" ng-disabled="form.$invalid || !isUnique(release)">SAVE</button>
 			</div> -->
+			<input type="submit" style="visibility:hidden" ng-disabled="editorData.form.$invalid || formDisabled">
     </form>
   </ion-content>
 </ion-modal-view>

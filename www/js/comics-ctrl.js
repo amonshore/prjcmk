@@ -121,7 +121,7 @@ function($scope, $ionicModal, $timeout, $state, $filter, $undoPopup, $utils, $de
 
 			$timeout(function() {
 			  $undoPopup.show({title: $filter('translate')('Comics removed'), 
-			  									text: '<i class="icon ion-android-system-back"></i> ' + $filter('translate')('CANCEL'), 
+			  									text: $filter('translate')('CANCEL'), 
 			  									timeout: "long"}).then(function(res) {
 			    if (res == 'ok') {
 			      $scope.selectedComics = $comicsData.undoRemove() || [];
