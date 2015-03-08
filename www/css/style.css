@@ -722,15 +722,3 @@ button.button.addcircle {
 button.button.addcircle.activated {
 	background-color: #E5B913;
 }
-
-/** action sheet **/
-.action-sheet-backdrop.android .action-sheet-wrapper .action-sheet .action-sheet-group {
-	margin-bottom: 0;
-	border-radius: 0;
-	background-color: #EFEFEF;
-}
-.action-sheet-backdrop.android .action-sheet-wrapper .action-sheet .action-sheet-group .button {
-	color: #333;
-	text-align: left;
-	padding-left: 14px;
-}

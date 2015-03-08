@@ -8,13 +8,13 @@
 
   <!-- barra secondaria, visibile quando quella primaria è nascosta -->
   <ion-header-bar class="bar bar-header bar-options" ng-show="currentBar=='options'">
-    <button class="button button-icon icon ion-ios7-arrow-down hide-options" on-tap="showNavBar()"></button>
+    <button class="button button-icon icon ion-chevron-down hide-options" on-tap="showNavBar()"></button>
     <div class="info">{{selectedComics.length}}</div>
     <div class="buttons pull-right">
       <button class="button button-icon icon ion-plus-round" ng-show="canEdit" on-tap="showAddRelease()"></button>
       <button class="button button-icon icon flaticon-copy" ng-show="canEdit" on-tap="cloneComicsEntry()"></button>
       <button class="button button-icon icon ion-compose" ng-show="canEdit" on-tap="editComicsEntry()"></button>
-      <button class="button button-icon icon ion-android-trash" on-tap="removeComicsEntry()"></button>
+      <button class="button button-icon icon ion-trash-b" on-tap="removeComicsEntry()"></button>
     </div>
   </ion-header-bar>
 

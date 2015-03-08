@@ -149,7 +149,11 @@ function($scope, $ionicModal, $timeout, $state, $undoPopup, $utils, $toast, $ion
     items = _items;
     //console.log("items", items.length)
     $scope.releases = [];
-		$ionicScrollDelegate.scrollTop();
+		//rc0 tolgo altrimenti va in errore
+		//$ionicScrollDelegate.scrollTop();
+
+		//rc0 forzo l'evento stateChangeSuccess altrimenti loadMore non viene chiamata
+		$scope.$broadcast('stateChangeSuccess');		
   };
 	//
 	var lastReadTime = null;
@@ -203,10 +207,10 @@ function($scope, $ionicModal, $timeout, $state, $undoPopup, $utils, $toast, $ion
 				//console.log(" - ", $scope.releases.length);
 			}
 			//NB sembra ci sia un baco, con $scope.$apply è una pezza
-			$scope.$apply(function(){
+			//rc0 $scope.$apply(function(){
 			    $scope.$broadcast('scroll.infiniteScrollComplete');
-			});
-		}, 10);
+			//rc0 });
+		}, 1);
 	};
 	//
 	$scope.moreDataCanBeLoaded = function() {

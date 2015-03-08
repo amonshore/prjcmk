@@ -363,7 +363,7 @@ function($ionicPlatform, $translate, $state, $ionicHistory, $settings, $rootScop
         fnActionSheetHide();
       } else {
         fnActionSheetHide = $ionicActionSheet.show({
-          cssClass: 'android',
+          // cssClass: 'android',
           buttons: [
               { text: $filter('translate')('Settings') },
               { text: $filter('translate')('Data') },

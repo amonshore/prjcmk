@@ -2,9 +2,9 @@
 
   <!-- pulsanti barra di navigazione -->
   <ion-header-bar class="bar-energized">
+    <button class="button button-icon icon ion-close" on-tap="editorCancel()"></button>
   	<h1 class="title">{{editorEntry.id == 'new' ? 'New comics entry': 'Edit comics entry' | translate}}</h1>
-    <button class="button button-icon icon ion-android-close" on-tap="editorCancel()"></button>
-    <button class="button button-icon icon ion-android-checkmark" on-tap="editorUpdate(editorEntry)" ng-disabled="editorData.form.$invalid || formDisabled"></button>
+    <button class="button button-icon icon ion-checkmark" on-tap="editorUpdate(editorEntry)" ng-disabled="editorData.form.$invalid || formDisabled"></button>
   </ion-header-bar>
 
   <!-- content -->
