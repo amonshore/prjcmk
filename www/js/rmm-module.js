@@ -55,6 +55,14 @@ IonicModule
         dst.push(src);
       }
       return dst;
+    },
+    //sep, array
+    join: function(sep) {
+      var arr = [];
+      for (var ii=1; ii<arguments.length; ii++) {
+        if (!_.str.isBlank(arguments[ii])) arr.push(arguments[ii]);
+      }
+      return arr.join(sep);
     }
   };
 });
@@ -706,7 +714,7 @@ IonicModule
   return {
     start: function() {
       if (window.cordova) {
-        $cordovaGoogleAnalytics.debugMode();
+        //$cordovaGoogleAnalytics.debugMode();
         $cordovaGoogleAnalytics.startTrackerWithId('UA-59687686-1');
         $cordovaGoogleAnalytics.setUserId(gaUserId);
       } else {
@@ -722,7 +730,7 @@ IonicModule
     },
     event: function(category, action, label, value) {
       if (window.cordova) {
-        $cordovaGoogleAnalytics.trackEvent(category, action, label, value);
+        $cordovaGoogleAnalytics.trackEvent(category, action, label, JSON.stringify(value));
       } else {
         console.log("track event ", category, action, label, value);
       }

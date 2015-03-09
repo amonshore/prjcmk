@@ -104,15 +104,17 @@ function($scope, $ionicModal, $timeout, $state, $filter, $undoPopup, $utils, $de
 	};
 	//
 	$scope.getComicsInfo = function(item) {
-		if (item.bestRelease && !_.str.isBlank(item.bestRelease.notes)) {
-			return item.bestRelease.notes;
-		} else if (_.str.isBlank(item.series)) {
-		  return item.notes;
-		} else if (_.str.isBlank(item.notes)) {
-			return item.series
-		} else {
-      return item.series + " - " + item.notes;
-    }
+		return $utils.join(' | ', item.series, item.authors, 
+			(item.bestRelease && item.bestRelease.notes) || item.notes);
+		// if (item.bestRelease && !_.str.isBlank(item.bestRelease.notes)) {
+		// 	return item.bestRelease.notes;
+		// } else if (_.str.isBlank(item.series)) {
+		//   return item.notes;
+		// } else if (_.str.isBlank(item.notes)) {
+		// 	return item.series
+		// } else {
+  //     return item.series + " - " + item.notes;
+  //   }
 	};
 	//funzione di rimozione elemento
 	$scope.removeComicsEntry = function() {

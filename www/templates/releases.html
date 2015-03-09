@@ -1,4 +1,5 @@
-<ion-view title="{{title | translate}}" hide-tabs="{{!!entry}}">
+<!-- <ion-view title="{{title | translate}}" hide-tabs="{{!!entry}}"> -->
+<ion-view title="{{title | translate}}">
  
   <!-- pu\santi barra di navigazione -->
   <ion-nav-buttons side="secondary">
@@ -35,7 +36,7 @@
     </ion-list>
     <ion-infinite-scroll
         ng-if="moreDataCanBeLoaded()"
-        icon="ion-loading-c"
+        spinner="android"
         on-infinite="loadMore()"
         distance="1%">
       </ion-infinite-scroll>    
