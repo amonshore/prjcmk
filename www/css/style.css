@@ -524,7 +524,7 @@ ion-side-menu.menu,
 }
 
 .best-release.expired:after {
-	border-right-color: #CC0000;
+	border-right-color: #E23237;
 }
 
 .best-release.expired.near:after {
@@ -545,7 +545,7 @@ ion-side-menu.menu,
 }
 
 .best-release.expired .number {
-	background-color: #CC0000;
+	background-color: #E23237;
 	color: #fff;
 }
 
@@ -595,8 +595,8 @@ ion-side-menu.menu,
 }
 
 .best-release.expired>.sign {
-	border-color: #CC0000;
-	color: #CC0000;
+	border-color: #E23237;
+	color: #E23237;
 }
 
 .best-release.near>.sign {
@@ -658,7 +658,7 @@ ion-side-menu.menu,
 	color: #ACACAC;
 }
 .item-release>.release:not(.purchased)>.number.expired {
-	background-color: #CC0000;
+	background-color: #E23237;
 	border-color: #A50E0E;
 	color: #FFFFFF;
 }
@@ -718,7 +718,7 @@ ion-side-menu.menu,
 	color: #669900;
 }
 .item-release>.release>.flags>.icon.expired {
-	color: #CC0000;
+	color: #E23237;
 }
 .item-release.release>.flags>.icon {
 	font-size: 1.3em;
@@ -754,4 +754,10 @@ button.button.addcircle {
 }
 button.button.addcircle.activated {
 	background-color: #E5B913;
+}
+
+/** action sheet **/
+
+.platform-android .action-sheet .action-sheet-title, .platform-android .action-sheet .button{
+	padding: 1px 10px;
 }
