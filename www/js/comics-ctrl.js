@@ -38,7 +38,11 @@ function($scope, $ionicModal, $timeout, $state, $filter, $undoPopup, $utils, $de
 		$scope.comics = [];
 		$scope.totComics = filteredComics.length;
 		//$scope.loadMore(); -> non necessario
-		$ionicScrollDelegate.scrollTop();
+		//rc0 tolgo altrimenti va in errore
+		//$ionicScrollDelegate.scrollTop();
+		
+		//rc0 forzo l'evento stateChangeSuccess altrimenti loadMore non viene chiamata
+		$scope.$broadcast('stateChangeSuccess');
 	};
 	//
 	var lastReadTime = null;
@@ -87,28 +91,30 @@ function($scope, $ionicModal, $timeout, $state, $filter, $undoPopup, $utils, $de
 				$scope.comics = _.union($scope.comics, filteredComics.slice(from, max));
 				//console.log(" - ", $scope.comics.length);
 			}
-			//NB sembra ci sia un baco, con $scope.$apply è una pezza
-			$scope.$apply(function(){
+			//rc0 //NB sembra ci sia un baco, con $scope.$apply è una pezza
+			//rc0 $scope.$apply(function(){
 			    $scope.$broadcast('scroll.infiniteScrollComplete');
-			});
-		}, 10);
+			//rc0 });
+		}, 1);
 	};
 	//
 	$scope.moreDataCanBeLoaded = function() {
-		//console.log('moreDataCanBeLoaded', $scope.comics.length, filteredComics.length);
+		// console.log('moreDataCanBeLoaded', $scope.comics && $scope.comics.length, filteredComics && filteredComics.length);
 		return $scope.comics && filteredComics && $scope.comics.length < filteredComics.length;
 	};
 	//
 	$scope.getComicsInfo = function(item) {
-		if (item.bestRelease && !_.str.isBlank(item.bestRelease.notes)) {
-			return item.bestRelease.notes;
-		} else if (_.str.isBlank(item.series)) {
-		  return item.notes;
-		} else if (_.str.isBlank(item.notes)) {
-			return item.series
-		} else {
-      return item.series + " - " + item.notes;
-    }
+		return $utils.join(' | ', item.series, item.authors, 
+			(item.bestRelease && item.bestRelease.notes) || item.notes);
+		// if (item.bestRelease && !_.str.isBlank(item.bestRelease.notes)) {
+		// 	return item.bestRelease.notes;
+		// } else if (_.str.isBlank(item.series)) {
+		//   return item.notes;
+		// } else if (_.str.isBlank(item.notes)) {
+		// 	return item.series
+		// } else {
+  //     return item.series + " - " + item.notes;
+  //   }
 	};
 	//funzione di rimozione elemento
 	$scope.removeComicsEntry = function() {

@@ -519,16 +519,16 @@ ion-side-menu.menu,
 	height: 0;
 	border-top: 6px solid transparent;
 	border-bottom: 6px solid transparent;
-	border-right: 6px solid #64B6F7;
+	border-right: 6px solid #B3C833;
 	content: '';
 }
 
 .best-release.expired:after {
-	border-right-color: #CC0000;
+	border-right-color: #E23237;
 }
 
 .best-release.expired.near:after {
-	border-right-color: #FF8800;
+	border-right-color: #1AA1E1;
 }
 
 .best-release.wishlist:after {
@@ -539,25 +539,25 @@ ion-side-menu.menu,
 	font-size: 1.2em;
 	text-align: center;
 	line-height: 25px;
-	background-color: #64B6F7;
+	background-color: #B3C833;
 	border-radius: 2px 2px 0 0;
 	color: #fff;
 }
 
 .best-release.expired .number {
-	background-color: #CC0000;
+	background-color: #E23237;
 	color: #fff;
 }
 
 .best-release.expired.near .number {
-	background-color: #FF8800;
-	/*border-color: #FF8800;*/
+	background-color: #1AA1E1;
+	/*border-color: #1AA1E1;*/
 	color: #fff;
 }
 
 .best-release.expired.near .date {
-	background-color: #FAEF70;
-	/*border-color: #FF8800;*/
+	background-color: #ECEFF1;
+	/*border-color: #1AA1E1;*/
 }
 
 .best-release.wishlist .number {
@@ -574,6 +574,39 @@ ion-side-menu.menu,
 	border-right: solid 1px #ddd;
 	border-bottom: solid 1px #ddd;
 	border-radius: 0 0 2px 2px;
+}
+
+.best-release>.sign {
+	position: absolute;
+	top: 1px;
+	left: -10px;
+	width: 20px;
+	height: 20px;
+	background-color: #fff;
+	border-radius: 50px;
+	border-style: solid;
+	border-width: 1px;
+	z-index: 2;
+	font-size: 11px;
+	text-align: center;
+	line-height: 18px;
+	border-color: #B3C833;
+	color: #B3C833;
+}
+
+.best-release.expired>.sign {
+	border-color: #E23237;
+	color: #E23237;
+}
+
+.best-release.near>.sign {
+	border-color: #5CA3C5;
+	color: #5CA3C5;
+}
+
+.best-release.wishlist>.sign {
+	border-color: #9933CC;
+	color: #9933CC;
 }
 
 .icon-editor-right {
@@ -612,11 +645,11 @@ ion-side-menu.menu,
 	line-height: 45px;
 	text-align: center;
 	font-size: 1.05em;
-	background-color: #64B6F7;
+	background-color: #B3C833;
 	color: #FFFFFF;
 	border-radius: 50px;
 	min-width: 46px;
-	border: solid 1px #3E89C5;
+	border: solid 1px #2C4C19;
 	float: left;
 }
 .item-release>.release.purchased>.number {
@@ -625,13 +658,13 @@ ion-side-menu.menu,
 	color: #ACACAC;
 }
 .item-release>.release:not(.purchased)>.number.expired {
-	background-color: #CC0000;
+	background-color: #E23237;
 	border-color: #A50E0E;
 	color: #FFFFFF;
 }
 .item-release>.release:not(.purchased)>.number.expired.near {
-	background-color: #FF8800;
-	border-color: #D87606;
+	background-color: #1AA1E1;
+	border-color: #3E515A;
 	color: #FFFFFF;
 }
 .item-release>.release:not(.purchased)>.number.wishlist {
@@ -685,7 +718,7 @@ ion-side-menu.menu,
 	color: #669900;
 }
 .item-release>.release>.flags>.icon.expired {
-	color: #CC0000;
+	color: #E23237;
 }
 .item-release.release>.flags>.icon {
 	font-size: 1.3em;
@@ -724,13 +757,7 @@ button.button.addcircle.activated {
 }
 
 /** action sheet **/
-.action-sheet-backdrop.android .action-sheet-wrapper .action-sheet .action-sheet-group {
-	margin-bottom: 0;
-	border-radius: 0;
-	background-color: #EFEFEF;
-}
-.action-sheet-backdrop.android .action-sheet-wrapper .action-sheet .action-sheet-group .button {
-	color: #333;
-	text-align: left;
-	padding-left: 14px;
+
+.platform-android .action-sheet .action-sheet-title, .platform-android .action-sheet .button{
+	padding: 1px 10px;
 }

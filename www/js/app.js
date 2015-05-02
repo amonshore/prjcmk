@@ -306,23 +306,23 @@ function($ionicPlatform, $translate, $state, $ionicHistory, $settings, $rootScop
   $ionicPlatform.ready(function() {
     //inizializzo tracking
     if ($settings.userOptions.traceEnabled == 'T') {
+      $rmmTrack.start();
       $rootScope.$on('$stateChangeSuccess',
       function(event, toState, toParams, fromState, fromParams) {
-        $rmmTrack.start();
         $rmmTrack.view(toState.url);
         $rmmTrack.event('ROUTE_EVT', 'STATE_CHANGE_START', 'params', toParams);
-        //visualizzo nuovamente la barra delle tab eventualmente nascosta tramite l'attributo hide-tabs
-        //console.log('$stateChangeSuccess', toState, toParams, fromState, fromParams);
-        $rootScope.hideTabs = false;
+        // //visualizzo nuovamente la barra delle tab eventualmente nascosta tramite l'attributo hide-tabs
+        // //console.log('$stateChangeSuccess', toState, toParams, fromState, fromParams);
+        // $rootScope.hideTabs = false;
       });
-    } else {
+    }/* else {
       $rootScope.$on('$stateChangeSuccess',
       function(event, toState, toParams, fromState, fromParams) {
         //visualizzo nuovamente la barra delle tab eventualmente nascosta tramite l'attributo hide-tabs
         //console.log('$stateChangeSuccess', toState, toParams, fromState, fromParams);
         $rootScope.hideTabs = false;
       });      
-    }
+    }*/
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
     if(window.cordova && window.cordova.plugins.Keyboard) {
@@ -363,7 +363,7 @@ function($ionicPlatform, $translate, $state, $ionicHistory, $settings, $rootScop
         fnActionSheetHide();
       } else {
         fnActionSheetHide = $ionicActionSheet.show({
-          cssClass: 'android',
+          // cssClass: 'android',
           buttons: [
               { text: $filter('translate')('Settings') },
               { text: $filter('translate')('Data') },
@@ -416,8 +416,8 @@ function($ionicPlatform, $translate, $state, $ionicHistory, $settings, $rootScop
 }]);
 
 angular.module('starter.controllers', ['starter.services'])
-.controller('AppCtrl', [ '$scope', '$settings', '$comicsData', '$rmmTrack',
-function($scope, $settings, $comicsData, $rmmTrack) {
+.controller('AppCtrl', [ '$scope', '$settings', '$comicsData',
+function($scope, $settings, $comicsData) {
   //
   console.log("***** Comikku STARTING");
   //
